@@ -2,9 +2,10 @@
   "recorded_at": "2026-11-04T23:10:42.972Z",
   "scope": "Local synthetic demonstration; two authored cases, not held-out accuracy or production throughput.",
   "backend_tests": {
-    "passed": 99,
-    "seconds": 29.86,
-    "includes_absent_optional_voice_runtime_validation": true
+    "passed": 100,
+    "seconds": 31.1,
+    "includes_absent_optional_voice_runtime_validation": true,
+    "includes_missing_saved_family_item_guard": true
   },
   "pharmacy_browser_tests": {
     "passed": 4,

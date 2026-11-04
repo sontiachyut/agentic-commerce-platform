@@ -14,11 +14,13 @@ The agent understands the request. The backend checks the saved items, family ac
 
 **3 minutes 57 seconds · narrated · real running customer and pharmacy screens.**
 
-[![Watch the complete Family Pickup demo](docs/demo/customer-order.png)](https://raw.githubusercontent.com/sontiachyut/agentic-commerce-platform/main/docs/demo/family-pickup-demo.mp4)
+*18-second silent preview. Select it to open the complete narrated video.*
+
+[![Animated preview — open the complete 3m57s narrated demo](docs/demo/preview.gif)](https://raw.githubusercontent.com/sontiachyut/agentic-commerce-platform/main/docs/demo/family-pickup-demo.mp4)
 
 [**Watch / download the full video**](https://raw.githubusercontent.com/sontiachyut/agentic-commerce-platform/main/docs/demo/family-pickup-demo.mp4) · [Captions](docs/demo/family-pickup-demo.srt) · [Demo walkthrough](docs/pharmacy/demo-guide.md)
 
-| Jump to | What you’ll see |
+| Time | What you’ll see |
 | --- | --- |
 | **00:17** | Four family members and their saved routines |
 | **00:35** | Explicit spending permission before the errand |
@@ -68,7 +70,7 @@ A convincing answer is only one step. The system also has to keep the purchase c
 - **Uncertainty stays visible.** A timeout triggers source inquiry with the same command identity. It does not become a second payment.
 - **Completion means something.** Accepted, prepared, paid, ready and collected remain distinct facts.
 
-**Verified on November 4, 2026:** 99 backend tests, 10 local browser tests, actual local speech recognition/neural playback, and a two-database restore rehearsal with matching data fingerprints. [Verification report](docs/verification-report.md) · [Measured demo evidence](results/pharmacy/2026-11-04-local.json)
+**Verified on November 4, 2026:** 100 backend tests, 10 local browser tests, actual local speech recognition/neural playback, and a two-database restore rehearsal with matching data fingerprints. [Verification report](docs/verification-report.md) · [Measured demo evidence](results/pharmacy/2026-11-04-local.json)
 
 ## Coming soon
 

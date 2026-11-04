@@ -4,7 +4,7 @@ Recorded 2026-11-04 on the owner's Apple Silicon Mac. All pharmacy people, recor
 
 | Check | Observed result |
 | --- | --- |
-| Full backend regression | **99 passed in 29.86 seconds** (87 preserved-engine cases and 12 pharmacy cases) |
+| Full backend regression | **100 passed in 31.10 seconds** (87 preserved-engine cases and 13 pharmacy cases) |
 | Targeted pharmacy rerun after speech process cleanup | **12 passed in 7.16 seconds** |
 | Pharmacy Chromium/browser acceptance | **4 passed in 40.3 seconds** including actual local recognition, actual Qwen3-TTS WAV generation and browser playback-state confirmation |
 | Preserved retail browser regression | **6 passed in 12.7 seconds** including local OIDC login/revocation and source response-loss recovery |
@@ -17,7 +17,7 @@ Recorded 2026-11-04 on the owner's Apple Silicon Mac. All pharmacy people, recor
 
 ## Pharmacy behavior exercised
 
-Backend tests cover full customer/staff/verified pickup; unresolved coverage, too-soon/exhausted refills; exact approval; twenty concurrent acceptances of one quote returning one order; two separate quotes competing for the same refill with one accepted; request-limit tightening; caregiver and permission revocation; authorization/capture response loss and inquiry; staff rejection/release; owner/role/CSRF/cancellation boundaries; body limits; pharmacy read-only MCP; and rejection of client-provided or stale spoken-success prose.
+Backend tests cover full customer/staff/verified pickup; an entire family request blocked when a requested member has no saved item; unresolved coverage, too-soon/exhausted refills; exact approval; twenty concurrent acceptances of one quote returning one order; two separate quotes competing for the same refill with one accepted; request-limit tightening; caregiver and permission revocation; authorization/capture response loss and inquiry; staff rejection/release; owner/role/CSRF/cancellation boundaries; body limits; pharmacy read-only MCP; and rejection of client-provided or stale spoken-success prose.
 
 The optional voice browser case injects a disclosed synthesized Aiden-preset command at Chromium's microphone input. It exercises getUserMedia, AudioWorklet, PCM WAV encoding, the local whisper.cpp recognizer, the workflow, then a real Qwen3-TTS Ryan-preset response. It verifies the returned engine, voice, WAV header, duration, correct location in the canonical sentence and the browser's speaking state. It is not a physical microphone, accent matrix, road/CarPlay test or independent human listening score.
 

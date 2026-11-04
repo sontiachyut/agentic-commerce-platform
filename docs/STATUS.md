@@ -16,7 +16,7 @@ Updated 2026-11-04. Branch `feat/pharmacy-family-pickup-v1`. Original retail eng
 
 ## Current verification
 
-- **99 backend tests passed in 29.86 seconds**, including 12 pharmacy cases: full handover, clinical/coverage blockers, concurrent duplicate/competing acceptance, requested budget, revoked access/permission, source response loss, identity/CSRF/cancellation and authoritative speech boundaries.
+- **100 backend tests passed in 31.10 seconds**, including 13 pharmacy cases: full handover, clinical/coverage/missing-saved-item blockers, concurrent duplicate/competing acceptance, requested budget, revoked access/permission, source response loss, identity/CSRF/cancellation and authoritative speech boundaries.
 - **4 pharmacy browser tests passed in 40.3 seconds**: customer/staff collection, strict budget and missing members, five-screen/dialog automated accessibility plus mobile overflow check, and genuine browser recorder → local recognition → workflow → Qwen3-TTS WAV response and browser playback confirmation. These are bounded Chromium checks, not every browser/device or a complete accessibility audit.
 - Natural speech smoke: 7.2 seconds of generated Ryan-preset confirmation in 9.047 seconds of synthesis after model loading; a separate local recognizer read back the expected Cedar Square and $40.98 confirmation. This is one sample, not a latency percentile or human naturalness score.
 - Updated non-root/read-only-root-filesystem pharmacy container built. Startup, product discovery and bundled recorder asset passed over HTTP. This packaged profile uses the rule baseline without the host speech/Codex environments; no packaged inference or pharmacy-load benchmark is claimed.

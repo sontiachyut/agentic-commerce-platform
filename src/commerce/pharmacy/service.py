@@ -339,6 +339,12 @@ class PharmacyService:
                 .order_by(RoutineItem.id)
             ).all()
             by_member = {m.id: m for m in members}
+            if set(by_member) - {item.member_id for item in items}:
+                request.state, request.message = (
+                    "BLOCKED",
+                    "A requested family member has no saved regular item. Review the saved list before ordering. Nothing was charged or ordered.",
+                )
+                return None
             lines = []
             for item in items:
                 member = by_member[item.member_id]

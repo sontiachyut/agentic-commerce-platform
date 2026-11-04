@@ -110,6 +110,32 @@ def test_complete_family_customer_staff_and_pickup_flow(system, pharmacy):
         assert (grant.held_minor, grant.spent_minor) == (0, 4098)
 
 
+def test_missing_saved_routine_blocks_entire_requested_family(system, pharmacy):
+    service, workflow, _, _ = pharmacy
+    service.create_permission(
+        system.actor,
+        PermissionInput(
+            members=["self", "dad", "mom", "sister"], per_order_minor=5000, total_minor=15000
+        ),
+    )
+    identifier = service.create_request(
+        system.actor,
+        PickupInput(text="Order the regular medicines for my family nearest home, up to $50"),
+        "family-missing-saved-routine",
+    )
+    with system.factory.begin() as db:
+        mother = db.scalar(select(FamilyMember).where(FamilyMember.alias == "mom"))
+        item = db.scalar(select(RoutineItem).where(RoutineItem.member_id == mother.id))
+        db.delete(item)
+    workflow.run(identifier)
+    detail = service.request_detail(system.actor, identifier)
+    assert detail["state"] == "BLOCKED"
+    assert "no saved regular item" in detail["message"]
+    assert detail["quote"] is None and detail["order"] is None
+    with system.source_factory() as db:
+        assert not db.scalars(select(SourceCommand)).all()
+
+
 @pytest.mark.parametrize(
     "change", [("coverage", "PENDING"), ("eligibility", "TOO_SOON"), ("refills_remaining", 0)]
 )
