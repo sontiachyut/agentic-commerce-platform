@@ -23,12 +23,6 @@ class VoiceRecognizer:
         )
 
     def transcribe(self, audio):
-        if not self.available():
-            raise DomainError(
-                "VOICE_UNAVAILABLE",
-                "Local voice recognition is not installed. You can type the same request.",
-                503,
-            )
         try:
             with wave.open(io.BytesIO(audio), "rb") as source:
                 if (
@@ -47,6 +41,12 @@ class VoiceRecognizer:
                 "Use a mono 16 kHz PCM recording between half a second and 45 seconds.",
                 422,
             ) from exc
+        if not self.available():
+            raise DomainError(
+                "VOICE_UNAVAILABLE",
+                "Local voice recognition is not installed. You can type the same request.",
+                503,
+            )
         started = time.monotonic()
         with tempfile.TemporaryDirectory(prefix="asterfield-voice-") as directory:
             path = Path(directory) / "request.wav"

@@ -3,7 +3,8 @@
   "scope": "Local synthetic demonstration; two authored cases, not held-out accuracy or production throughput.",
   "backend_tests": {
     "passed": 99,
-    "seconds": 39.28
+    "seconds": 29.86,
+    "includes_absent_optional_voice_runtime_validation": true
   },
   "pharmacy_browser_tests": {
     "passed": 4,

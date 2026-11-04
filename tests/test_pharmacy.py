@@ -289,11 +289,15 @@ def test_revoked_permission_blocks_staff_capture_and_rejection_releases_budget(s
 
 
 def test_pharmacy_api_identity_csrf_cancel_voice_limits_and_read_only_mcp(system):
+    import io
+    import wave
+
     from fastapi.testclient import TestClient
 
     from commerce.api import create_app
 
     system.settings.product_mode = "pharmacy"
+    system.settings.voice_enabled = False
     system.settings.pharmacy_demo_minute = 1085
     app = create_app(system.settings, checkpointer=InMemorySaver(), source=system.worker.source)
     with TestClient(app) as client:
@@ -335,6 +339,17 @@ def test_pharmacy_api_identity_csrf_cancel_voice_limits_and_read_only_mcp(system
             ).status_code
             == 422
         )
+        valid_audio = io.BytesIO()
+        with wave.open(valid_audio, "wb") as wav:
+            wav.setnchannels(1)
+            wav.setsampwidth(2)
+            wav.setframerate(16000)
+            wav.writeframes(bytes(16000))
+        unavailable = client.post(
+            "/api/v1/pharmacy/voice/transcribe", content=valid_audio.getvalue(), headers=headers
+        )
+        assert unavailable.status_code == 503
+        assert unavailable.json()["error"]["code"] == "VOICE_UNAVAILABLE"
         tools = client.post(
             "/mcp",
             headers={

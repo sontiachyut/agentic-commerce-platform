@@ -4,7 +4,7 @@ Recorded 2026-11-04 on the owner's Apple Silicon Mac. All pharmacy people, recor
 
 | Check | Observed result |
 | --- | --- |
-| Full backend regression | **99 passed in 39.28 seconds** (87 preserved-engine cases and 12 pharmacy cases) |
+| Full backend regression | **99 passed in 29.86 seconds** (87 preserved-engine cases and 12 pharmacy cases) |
 | Targeted pharmacy rerun after speech process cleanup | **12 passed in 7.16 seconds** |
 | Pharmacy Chromium/browser acceptance | **4 passed in 40.3 seconds** including actual local recognition, actual Qwen3-TTS WAV generation and browser playback-state confirmation |
 | Preserved retail browser regression | **6 passed in 12.7 seconds** including local OIDC login/revocation and source response-loss recovery |
