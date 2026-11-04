@@ -1,4 +1,9 @@
-# Milestone-controlled commerce and agent engineering
+# Pharmacy product and agent engineering
+
+Product direction updated 2026-11-04: the owner authorized a substantial pivot to an original fictional pharmacy product, using CVS/Walmart only as public workflow references. Read docs/pharmacy/product-brief.md and research.md. Build Family Pickup as a standalone customer-and-staff product supporting the larger household voice/in-car vision. Replace generic retail/kiosk examples and default UI/data with pharmacy-related synthetic scenarios. Preserve the original engine/history at checkpoint/retail-engine-before-pharmacy-2026-11-04 (4e077c9, pushed). Do not copy retailer branding or claim affiliation, live prescription/insurance processing, or native CarPlay approval.
+
+Client demonstration is mandatory: deliver a playable video of the complete working product, including genuine voice recognition where supported, the customer journey, pharmacy staff progression and a blocker/recovery case. Screenshots or generated code alone do not complete the product. Keep a repeatable demo script/fixture and truthful implementation boundaries. Continue autonomously; request only missing facts or authorization for external/paid/real-world actions.
+
 
 Owner authorization updated 2026-11-04: build the standalone Agentic Commerce product, supporting documents, local infrastructure, tests and CI, using the assessment and technical design as capability targets. Build and verify each slice before advancing. Java integration is deferred and is not a standalone release gate. The owner approved local Codex-subscription inference; no separately billed model APIs, cloud resources, live payments or public runtime deployment are authorized. Record measured results and limitations rather than treating the assessment's historical prose as implementation evidence.
 
@@ -10,6 +15,6 @@ AC-01 through AC-10 are mandatory. Start human-approved and complete that vertic
 
 Keep user intent, purchase permission, stock reservation, order, payment, fulfillment and agent execution state separate. Graph checkpoints do not guarantee payment or dispense idempotency. Do not directly reuse the old PayOps investigation design; this is a new commerce application with original documentation.
 
-Use synthetic data, sandbox providers and a virtual kiosk only. No real card data, funds, hardware control, billable providers/cloud resources or public runtime deployment without explicit approval. No protocol-compliance, production-use or benchmark claims without actual conformance/test evidence. References are for concepts, not source translation or indiscriminate copying; inspect per-file licenses before future reuse.
+Use synthetic pharmacy data and sandbox prescription/payment/fulfillment providers only. The prior virtual-kiosk use case is preserved as historical engineering work and is superseded for the default product. No real card data, funds, hardware control, billable providers/cloud resources or public runtime deployment without explicit approval. No protocol-compliance, production-use or benchmark claims without actual conformance/test evidence. References are for concepts, not source translation or indiscriminate copying; inspect per-file licenses before future reuse.
 
 Use exact repository-scoped Git operations. The Java payment platform remains independent; do not duplicate it in Python or access its database. Only the exact old payops-ai GitHub repository may be deleted after the separately required final owner confirmation; no other repository deletion is authorized.

@@ -1,10 +1,14 @@
-# Operations runbook — local v0.1
+# Operations runbook — local pharmacy candidate and preserved engine
 
 ## Supported environment
 
-One owner-operated loopback application, one PostgreSQL instance, separate commerce/source databases and two worker threads. Python 3.12 and Node 22+ are the supported setup. The verified developer machine used macOS, Python 3.12.7 and Node 23.9.0; Linux CI is configured but must run before claiming cross-platform verification.
+One owner-operated loopback application, one PostgreSQL instance, separate commerce/source databases and separate durable planning/payment workers. Python 3.12 and Node 22+ are the supported setup. The verified developer machine used macOS, Python 3.12.7 and Node 23.9.0; The prior retail checkpoint passed Linux CI; current branch evidence is recorded in STATUS.
 
 Do not expose ports through a tunnel or change the bind address for a customer demo. Persona login is synthetic, not enterprise authentication. No real card, health or customer data belongs in this environment.
+
+## Current product
+
+Pharmacy is the default. Use [Family Pickup](pharmacy/demo-guide.md) for the customer/staff journey; the virtual-kiosk failure lab and retail recovery examples below belong to `COMMERCE_PRODUCT_MODE=retail`. Clinical eligibility/coverage and payment/fulfillment are synthetic. A submitted pharmacy order goes through authorization, staff preparation, capture, readiness and verified handover. Staff cannot force an unknown source result to success.
 
 ## First boot
 
@@ -36,9 +40,15 @@ The stack tool records its own PIDs in `.local/stack.json` and verifies module a
 
 Install/sign in to the supported Codex CLI yourself; the application reuses native local authentication without copying credentials. The verified adapter used CLI 0.163.0. The runtime invokes `codex exec` in an empty temporary directory with an ephemeral thread, strict output schema, read-only sandbox, ignored user configuration and shell/web/plugin tools disabled. Test the adapter after upgrading Codex; CLI options are an integration contract.
 
-Default caps are 20 pre-dispatch call reservations per UTC day for this installation, four per shopping session and five active sessions per user. A normal eligible purchase uses two decisions. Reservations persist even when inference fails, which bounds retries conservatively. The app does not buy API credits or change a subscription. A quota/auth/timeout failure requires an explicit user retry and does not enter an automatic model retry loop.
+Default caps are 20 pre-dispatch call reservations per UTC day for this installation, four per shopping session and five active sessions per user. A normal eligible retail purchase uses two decisions; a family pickup request uses one structured interpretation. Pharmacy separately limits a household to three queued/planning requests. Reservations persist even when inference fails, which bounds retries conservatively. The app does not buy API credits or change a subscription. A quota/auth/timeout failure requires an explicit user retry and does not enter an automatic model retry loop.
 
 The rule baseline is for tests and diagnosis. It is visibly labeled and cannot replace evidence about the real model. Use a supported inference provider arrangement before hosting a service for customers; local subscription authentication is not that arrangement.
+
+## Local natural voice
+
+On Apple Silicon, `tools/install_neural_voice.py` provisions the separate hash-locked Qwen3-TTS/MLX environment and approximately 2 GB of pinned model files. `tools/install_voice.py` provisions recognition. Neither copies model authentication or calls a paid speech API. Synthesis uses a persistent serialized subprocess with an eight-utterance in-memory cache and a 90-second deadline. It receives canonical status sentences and no application secrets.
+
+Spoken updates can be disabled; Hear update explicitly replays the current owned status. A stale state is rejected and arbitrary client prose is not accepted. If synthesis is unavailable/busy, the written status remains usable. Voice can lag visible status; the current candidate has no streaming conversational latency SLO. Audio recordings are temporary except the explicit synthetic test/demo fixtures. Restart the API after provisioning or changing a runtime.
 
 ## Recovery decisions
 

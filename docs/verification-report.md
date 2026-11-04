@@ -1,4 +1,39 @@
-# Verification report — historical v0.1 and local hardening
+# Verification report — Asterfield Pharmacy candidate
+
+Recorded 2026-11-04 on the owner's Apple Silicon Mac. All pharmacy people, records, locations, pricing, stock, payments and fulfillment are synthetic. Current evidence supersedes historical milestone statements below; it does not establish clinical certification, public-service readiness or external protocol compatibility.
+
+| Check | Observed result |
+| --- | --- |
+| Full backend regression | **99 passed in 39.28 seconds** (87 preserved-engine cases and 12 pharmacy cases) |
+| Targeted pharmacy rerun after speech process cleanup | **12 passed in 7.16 seconds** |
+| Pharmacy Chromium/browser acceptance | **4 passed in 40.3 seconds** including actual local recognition, actual Qwen3-TTS WAV generation and browser playback-state confirmation |
+| Preserved retail browser regression | **6 passed in 12.7 seconds** including local OIDC login/revocation and source response-loss recovery |
+| Accessibility/mobile | Automated WCAG checks on pharmacy landing, pickup, permission dialog, household and history; permission keyboard behavior and a 390-pixel viewport without horizontal overflow. Bounded Chromium checks, not a complete audit |
+| TypeScript/Vite build and Ruff | Passed |
+| Natural voice sample | Qwen3-TTS supplied Ryan preset: 7.2 seconds of audio generated in 9.047 seconds after model loading. A separate whisper.cpp run read back the expected Cedar Square and $40.98 confirmation. One sample, not a percentile or human-rated quality benchmark |
+| Optional neural-runtime dependency audit | pip-audit 2.10.1 reported no known vulnerabilities in the pinned local voice environment at check time |
+| Pharmacy image | Non-root/read-only-root startup, product discovery and recorder asset over HTTP passed. This packaged profile uses a rule baseline and excludes host Codex/speech environments |
+| Migration/restore rehearsal | Fresh upgrade, metadata check, downgrade to base and re-upgrade passed. Commerce: **29 tables / 826 rows**; source: **2 tables / 48 rows** restored with matching per-table fingerprints at the recorded snapshot |
+
+## Pharmacy behavior exercised
+
+Backend tests cover full customer/staff/verified pickup; unresolved coverage, too-soon/exhausted refills; exact approval; twenty concurrent acceptances of one quote returning one order; two separate quotes competing for the same refill with one accepted; request-limit tightening; caregiver and permission revocation; authorization/capture response loss and inquiry; staff rejection/release; owner/role/CSRF/cancellation boundaries; body limits; pharmacy read-only MCP; and rejection of client-provided or stale spoken-success prose.
+
+The optional voice browser case injects a disclosed synthesized Aiden-preset command at Chromium's microphone input. It exercises getUserMedia, AudioWorklet, PCM WAV encoding, the local whisper.cpp recognizer, the workflow, then a real Qwen3-TTS Ryan-preset response. It verifies the returned engine, voice, WAV header, duration, correct location in the canonical sentence and the browser's speaking state. It is not a physical microphone, accent matrix, road/CarPlay test or independent human listening score.
+
+## Client recording
+
+A complete real-Codex customer/staff recording has demonstrated BUDGET_EXCEEDED without an order, ORDERED with AUTHORIZED payment, READY_FOR_PICKUP with CAPTURED payment, and PICKED_UP with confirmed handover. Both model interpretations reserved the normal durable allowance. Actual app speech and separately generated neural narration are retained with the raw WebM and scene/receipt manifest. Final video: **236.569 seconds, 6,616,715 bytes, H.264 1440×1000 with AAC audio**. It contains two actual app spoken updates plus separately generated neural narration and the synthetic customer command. The final isolated journal contains one authorize, one capture and one dispense command, with two actual Codex interpretations taking 4.502 and 4.453 seconds. These are two authored demonstrations, not a representative accuracy result. [Sanitized run evidence](../results/pharmacy/2026-11-04-local.json); [capture recipe](pharmacy/demo-guide.md).
+
+Recorder development corrected display branding versus canonical facility name, a request-state assertion and an evidence-export table name. The running workflow was not changed to satisfy those assertions. The final capture/evidence helper completed successfully. Private outtakes remain available; they are not labeled production benchmarks or silently converted into accuracy claims.
+
+## Current limits
+
+The pharmacy batch workflow uses internal quotes/permissions; preserved AP2/TAP-style/UCP/ACP adapters are not its execution path. Real pharmacy/payer/payment contracts, external enrollment/conformance, native CarPlay approval, supported hosted inference, production identity/operations, abuse controls, broader evaluation/load/security/accessibility work and a distribution license remain release gates. Audio generation can lag the visible order status; written status remains authoritative and available if speech is busy/unavailable. No general low-latency conversational SLO is claimed.
+
+---
+
+## Preserved historical v0.1 and retail hardening
 
 The original v0.1 record below is preserved. Current candidate evidence: 87 backend tests passed in 17.36 seconds; six browser tests passed (including real local OIDC and four-screen automated accessibility checks); the non-root packaged HTTP smoke completed in 2.597 seconds with synthetic response-loss recovery and duplicate execution resolving to one ID. The updated migration chain also passed fresh upgrade, downgrade-to-base, upgrade and metadata checks, and both commerce/source restores matched their table fingerprints. Identity-provider/configuration recovery remains a separate exercise. These timings are individual local observations, not latency percentiles or capacity claims. The older Docker ARM guest required the documented portable OpenSSL CPU profile. See [current status](STATUS.md) and [identity/packaging](local-identity-and-packaging.md).
 

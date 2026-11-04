@@ -3,6 +3,7 @@
 import hmac
 import time
 from contextlib import asynccontextmanager
+from typing import Literal
 
 from fastapi import Depends, FastAPI, Header, HTTPException
 from pydantic import Field
@@ -26,6 +27,7 @@ class SourcePayment(SourceBase):
     amount_minor: Mapped[int] = mapped_column(Integer)
     currency: Mapped[str] = mapped_column(String(3))
     binding: Mapped[str] = mapped_column(String(64))
+    workflow: Mapped[str] = mapped_column(String(16), default="kiosk")
     state: Mapped[str] = mapped_column(String(32), default="NEW")
 
 
@@ -40,6 +42,7 @@ class SourceCommand(SourceBase):
 
 
 class SourceRequest(StrictModel):
+    workflow: Literal["kiosk", "pharmacy"] = "kiosk"
     execution_id: str = Field(min_length=36, max_length=36)
     action: str
     amount_minor: int = Field(gt=0, le=1_000_000)
@@ -63,7 +66,10 @@ class StatefulSource:
         if request.fault_profile == "source_unavailable":
             raise HTTPException(503, "Synthetic source unavailable")
         key = f"{request.execution_id}:{request.action}"
-        request_hash = digest(request.model_dump(exclude={"fault_profile"}))
+        request_binding = request.model_dump(exclude={"fault_profile"})
+        if request.workflow == "kiosk":
+            request_binding.pop("workflow")
+        request_hash = digest(request_binding)
         response_lost = False
         with self.factory.begin() as db:
             db.execute(
@@ -73,6 +79,7 @@ class StatefulSource:
                     amount_minor=request.amount_minor,
                     currency=request.currency,
                     binding=request.quote_digest,
+                    workflow=request.workflow,
                     state="NEW",
                 )
                 .on_conflict_do_nothing()
@@ -83,7 +90,8 @@ class StatefulSource:
                 .with_for_update()
             )
             if (
-                payment.amount_minor != request.amount_minor
+                payment.workflow != request.workflow
+                or payment.amount_minor != request.amount_minor
                 or payment.currency != request.currency
                 or payment.binding != request.quote_digest
             ):
@@ -111,7 +119,9 @@ class StatefulSource:
                 )
             elif action == "capture":
                 dispense = db.get(SourceCommand, f"{request.execution_id}:dispense")
-                if not dispense or dispense.result["state"] != "DISPENSED":
+                if payment.workflow == "kiosk" and (
+                    not dispense or dispense.result["state"] != "DISPENSED"
+                ):
                     raise HTTPException(409, "Confirmed dispense required before capture")
                 if payment.state not in {"AUTHORIZED", "CAPTURED"}:
                     raise HTTPException(409, "No capturable authorization")
@@ -127,6 +137,7 @@ class StatefulSource:
                     raise HTTPException(409, "Only a captured payment can be refunded")
                 state = payment.state = "REFUNDED"
             result = {
+                "workflow": payment.workflow,
                 "command_id": key,
                 "execution_id": request.execution_id,
                 "action": action,

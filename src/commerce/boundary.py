@@ -44,8 +44,13 @@ class Boundary:
                 if chunk["type"] == "http.disconnect":
                     return
                 body.extend(chunk.get("body", b""))
-                if len(body) > 65536:
-                    await reject("REQUEST_TOO_LARGE", "Request exceeds 64 KiB.", 413)
+                maximum = (
+                    1_440_044 if scope.get("path") == "/api/v1/pharmacy/voice/transcribe" else 65536
+                )
+                if len(body) > maximum:
+                    await reject(
+                        "REQUEST_TOO_LARGE", "Request exceeds the endpoint body limit.", 413
+                    )
                     return
                 if not chunk.get("more_body", False):
                     break
@@ -76,7 +81,7 @@ class Boundary:
                         "X-Content-Type-Options": "nosniff",
                         "Referrer-Policy": "no-referrer",
                         "Cache-Control": "no-store",
-                        "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'",
+                        "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; media-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'",
                     }
                 )
             await send(message)

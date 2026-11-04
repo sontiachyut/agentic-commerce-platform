@@ -2,6 +2,10 @@
 
 The product target includes AP2 purchase authority, Visa TAP agent verification, UCP/ACP commerce boundaries and MCP tool access. These responsibilities remain separate. A signed agent request does not itself authorize spending; successful checkout acceptance does not prove a payment or delivery completed.
 
+## Pharmacy product boundary
+
+The default Family Pickup workflow uses internal immutable multi-item quotes and purchasing permissions. It does not yet route through the preserved AP2/TAP-style/UCP/ACP adapters described below. Pharmacy MCP provides only `get_family_regulars` and `get_family_pickup_status`, with authenticated household scope; neither mutates a purchase. Do not claim that a pharmacy batch order has passed external protocol conformance or a live wallet/merchant integration.
+
 ## Historical v0.1 boundary (superseded by the candidate below)
 
 | Area | Implemented now | Remaining before an external compatibility claim |

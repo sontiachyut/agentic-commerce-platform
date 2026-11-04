@@ -1,13 +1,12 @@
 import threading
-import time
 from typing import TypedDict
 
 from langgraph.graph import END, START, StateGraph
 from langgraph.types import Command, interrupt
-from sqlalchemy import func, select, text
+from sqlalchemy import select, text
 
 from commerce.domain import DomainError
-from commerce.models import Approval, AuditEvent, Grant, PurchaseSession
+from commerce.models import Approval, Grant, PurchaseSession
 from commerce.planner import ModelUnavailable
 from commerce.schemas import Actor, ExecutionRequest, Intent
 from commerce.service import own, record
@@ -144,34 +143,17 @@ class ShoppingAgent:
         return {"selection": selection.model_dump()}
 
     def reserve_model_call(self, session_id, purpose):
-        if self.planner.name != "codex":
-            return
+        from commerce.model_budget import reserve_call
+
         actor, _ = self.actor_and_session(session_id)
-        with self.service.factory.begin() as db:
-            db.execute(text("SELECT pg_advisory_xact_lock(91470332)"))
-            day_start = int(time.time() // 86400) * 86400
-            daily = db.scalar(
-                select(func.count())
-                .select_from(AuditEvent)
-                .where(
-                    AuditEvent.event_type == "model.call_reserved",
-                    AuditEvent.created_at >= day_start,
-                )
-            )
-            per_session = db.scalar(
-                select(func.count())
-                .select_from(AuditEvent)
-                .where(
-                    AuditEvent.event_type == "model.call_reserved",
-                    AuditEvent.resource_id == session_id,
-                )
-            )
-            if (
-                daily >= self.service.settings.max_daily_model_calls
-                or per_session >= self.service.settings.max_model_calls_per_session
-            ):
-                raise ModelUnavailable("The configured local model-call budget is exhausted")
-            record(db, actor, session_id, "model.call_reserved", purpose=purpose, provider="codex")
+        reserve_call(
+            self.service.factory,
+            self.service.settings,
+            actor,
+            session_id,
+            purpose,
+            self.planner.name,
+        )
 
     def prepare_quote(self, state):
         actor, _ = self.actor_and_session(state["session_id"])

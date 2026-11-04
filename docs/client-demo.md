@@ -1,3 +1,5 @@
+> The default product is now Asterfield Pharmacy. Use the [current complete customer/staff/voice demonstration](pharmacy/demo-guide.md). The virtual-kiosk script below is preserved historical retail-mode material.
+
 # Client demonstration — five minutes
 
 ## Product promise

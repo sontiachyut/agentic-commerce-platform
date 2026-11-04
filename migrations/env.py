@@ -4,6 +4,7 @@ from sqlalchemy import create_engine, pool
 from commerce import models  # noqa: F401
 from commerce.config import get_settings
 from commerce.db import Base
+from commerce.pharmacy import models as pharmacy_models  # noqa: F401
 
 target_metadata = Base.metadata
 

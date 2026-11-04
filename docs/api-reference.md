@@ -1,14 +1,37 @@
-# HTTP API — v0.1
+# HTTP API — pharmacy candidate and preserved retail engine
 
 Interactive reference: `http://127.0.0.1:8510/docs`. Machine-readable contract: [OpenAPI snapshot](openapi.json). Regenerate the snapshot after API schema changes; do not edit it by hand.
 
 ## Authentication and mutations
 
-`POST /api/v1/auth/demo` with `{"persona":"alex"}` establishes an eight-hour signed HttpOnly SameSite=Strict synthetic session and returns a CSRF token. Supported personas are alex, sam and operator. This is only a local demonstration identity boundary.
+The default product mode is pharmacy; `GET /api/v1/product` describes it. Optional local OIDC uses Code + PKCE and provisioned tenant/role membership. Demo mode uses `POST /api/v1/auth/demo` with persona alex, sam or operator. Both establish an opaque revocable HttpOnly SameSite=Strict server-side session and return a CSRF token. `/api/v1/auth/me` restores the actor/CSRF token. Logout revokes the session and clears its cookie.
 
-All subsequent mutations require `X-CSRF-Token` from the session response when using its cookie. Origin and host are checked; cross-user resources are denied. `/api/v1/auth/me` restores the current actor/token after reload. Logout deletes the browser cookie; production session revocation is not implemented.
+Mutations using cookies require `X-CSRF-Token`; origin/host and authenticated resource scope are checked. Identity is not accepted from request bodies. Most bodies are bounded to 64 KiB; the voice-transcription endpoint separately allows a validated PCM WAV of up to 45 seconds/1,440,044 bytes. Amounts are integer USD minor units. A 202 response means queued/accepted for processing, not paid or handed over.
 
-Amounts are integer USD minor units: `350` means $3.50. Clients never supply authoritative final prices. User/tenant identity is derived from the signed session, not request bodies. JSON mutation bodies are bounded to 64 KiB; shopping requests to 2,000 characters. Resource IDs and model values are untrusted inputs.
+## Pharmacy workflow
+
+| Method / path | Meaning |
+| --- | --- |
+| GET `/api/v1/pharmacy/workspace` | Authorized customer household/history or facility-scoped staff workspace |
+| GET `/api/v1/pharmacy/voice` | Local recognition and natural-synthesis availability; no native CarPlay claim |
+| POST `/api/v1/pharmacy/voice/transcribe` | Authenticated customer PCM WAV recognition, not purchase approval |
+| POST `/api/v1/pharmacy/permissions` | Explicit saved-member permission with per-order/total/count/expiry limits |
+| DELETE `/api/v1/pharmacy/permissions/{id}` | Revoke future use and prevent a new staff capture confirmation |
+| POST `/api/v1/pharmacy/requests` | Idempotent text/voice request; body `text`, `channel`; Idempotency-Key required |
+| GET `/api/v1/pharmacy/requests/{id}` | Owned request, quote, order/source facts and event history |
+| POST `/api/v1/pharmacy/requests/{id}/approval` | Exact current `quote_digest`; does not accept model-created authority |
+| POST `/api/v1/pharmacy/requests/{id}/cancel` | Cancel before pharmacy submission; submitted orders require staff reconciliation |
+| POST `/api/v1/pharmacy/requests/{id}/speech` | Current `state` only; backend constructs the spoken sentence; no arbitrary client prose |
+| GET `/api/v1/pharmacy/staff` | Assigned-facility queue |
+| POST `/api/v1/pharmacy/staff/orders/{id}` | ready with preparation confirmation, reject before capture, or collect with customer pickup code |
+
+Natural speech returns a bounded base64 WAV, engine/voice, duration and synthesis timing. This optional Apple Silicon Qwen3-TTS profile runs locally in an isolated process; failure leaves the written status available. Speech endpoints retain ownership, role and CSRF controls. A client cannot supply a success sentence or speak a different state from the recorded request.
+
+Requests use QUEUED/PLANNING, NEEDS_INPUT, BLOCKED/BUDGET_EXCEEDED, AWAITING_APPROVAL, ORDERING/ORDERED, READY_FOR_PICKUP and PICKED_UP, with cancellation/review/model-unavailable paths. Payment authorization is not capture; readiness is not physical handover. See [pharmacy architecture](pharmacy/architecture.md).
+
+## Preserved retail-mode API
+
+The following paths are retained for `COMMERCE_PRODUCT_MODE=retail` and return 404 in pharmacy mode. Their one-item virtual-kiosk scenario is historical, rather than the current default customer product.
 
 ## Workflow
 
@@ -47,9 +70,9 @@ Operator-only endpoints: GET `/api/v1/operator/overview`; POST `/api/v1/operator
 
 The source simulator has a separate API/database on port 8511. Its `/v1/commands` and `/v1/commands/{execution}/{action}` endpoints require the application service token. It commits each effect independently and can lose a response after commit. It is not a client-facing approval route or a payment gateway implementation.
 
-## MCP subset
+## MCP transport
 
-POST `/mcp` uses the same authenticated boundary and CSRF rules. It accepts JSON-RPC initialize, ping, tools/list, tools/call and initialized notification. Tools are `search_products` and `get_purchase_status`; neither can approve or mutate a purchase. Protocol versions 2025-06-18 and 2025-03-26 are recognized for this subset. Full transport/session/SSE interoperability is outstanding; see [protocol support](protocol-support.md).
+The official SDK 2.3.0 exposes authenticated read-only Streamable HTTP tools. Pharmacy mode provides `get_family_regulars` and `get_family_pickup_status`; retail mode provides `search_products` and `get_purchase_status`. Neither mode exposes approval, permission creation, payment or handover tools. Modern/legacy HTTP and metadata discovery are tested for the preserved transport; native OIDC client-browser authorization remains a separate integration exercise. [Exact support matrix](protocol-support.md).
 
 ## Failures
 

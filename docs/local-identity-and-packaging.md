@@ -1,6 +1,6 @@
 # Local identity and packaging
 
-The default setup remains loopback-only, synthetic, and usable without a paid API. Native Codex inference uses the owner's existing sign-in. The distributable service image contains no Codex executable or authentication cache; its local demo runs the explicit rule baseline.
+The default setup remains loopback-only, synthetic, and usable without a paid API. Native Codex inference uses the owner's existing sign-in. The distributable service image contains no Codex executable or authentication cache; its local demo runs the explicit rule baseline. The current image is `agentic-commerce:local-pharmacy-v0.1`; its default product is pharmacy. Host whisper.cpp/Qwen3-TTS runtimes are not bundled. The native host profile supplies real local speech and Codex.
 
 ## Identity
 

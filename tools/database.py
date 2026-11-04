@@ -63,6 +63,14 @@ def provision():
     # Provision source/checkpoint schemas with the migration identity, never at runtime.
     source_engine = make_engine(settings.simulator_database_url)
     SourceBase.metadata.create_all(source_engine)
+    from sqlalchemy import text
+
+    with source_engine.begin() as db:
+        db.execute(
+            text(
+                "ALTER TABLE source_payments ADD COLUMN IF NOT EXISTS workflow VARCHAR(16) NOT NULL DEFAULT 'kiosk'"
+            )
+        )
     source_engine.dispose()
     from langgraph.checkpoint.postgres import PostgresSaver
 

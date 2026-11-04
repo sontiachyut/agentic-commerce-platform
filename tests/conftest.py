@@ -66,6 +66,7 @@ def system():
         signing_key="synthetic-test-signing-key-" * 3,
         source_token="synthetic-test-source-token-" * 3,
         worker_enabled=False,
+        product_mode="retail",
         trace_enabled=False,
     )
     engine, source_engine = make_engine(url), make_engine(source_url)

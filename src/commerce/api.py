@@ -35,6 +35,11 @@ from commerce.models import (
 )
 from commerce.observability import configure_tracing
 from commerce.payments import HttpSource
+from commerce.pharmacy.api import register_pharmacy
+from commerce.pharmacy.planner import FamilyBaseline, FamilyCodex
+from commerce.pharmacy.service import PharmacyService
+from commerce.pharmacy.worker import PharmacyWorker
+from commerce.pharmacy.workflow import FamilyWorkflow
 from commerce.planner import BaselinePlanner, CodexPlanner
 from commerce.protocol_gateway import ProtocolGateway
 from commerce.protocol_security import LocalKeys
@@ -61,6 +66,7 @@ def create_app(settings: Settings | None = None, *, checkpointer=None, planner=N
     engine = make_engine(settings.database_url)
     factory = make_sessions(engine)
     service = CommerceService(factory, settings)
+    pharmacy = PharmacyService(factory, settings)
     identity_service = IdentityService(factory, settings)
     protocol_gateway = ProtocolGateway(
         service, identity_service, LocalKeys(Path(".local/protocol-keys.json"))
@@ -69,7 +75,8 @@ def create_app(settings: Settings | None = None, *, checkpointer=None, planner=N
     @asynccontextmanager
     async def lifespan(app):
         configure_tracing(settings.trace_enabled)
-        seed(factory)
+        if settings.product_mode == "retail":
+            seed(factory)
         connection = None
         try:
             if checkpointer is None:
@@ -97,12 +104,26 @@ def create_app(settings: Settings | None = None, *, checkpointer=None, planner=N
             worker = Worker(factory, settings, active_source, agent, kinds={"EXECUTION"})
             agent_worker = Worker(factory, settings, active_source, agent, kinds={"AGENT"})
             app.state.worker, app.state.agent, app.state.agent_worker = worker, agent, agent_worker
+            family_planner = (
+                FamilyCodex(settings) if settings.model_provider == "codex" else FamilyBaseline()
+            )
+            family_worker = PharmacyWorker(
+                pharmacy, FamilyWorkflow(pharmacy, family_planner, saver), active_source
+            )
+            app.state.pharmacy_worker = family_worker
             if settings.worker_enabled:
                 worker.start()
-                agent_worker.start()
+                if settings.product_mode == "retail":
+                    agent_worker.start()
+                else:
+                    family_worker.start()
             async with mcp_server.session_manager.run():
                 yield
         finally:
+            if hasattr(app.state, "speaker"):
+                app.state.speaker.close()
+            if hasattr(app.state, "pharmacy_worker"):
+                app.state.pharmacy_worker.stop()
             if hasattr(app.state, "worker"):
                 app.state.worker.stop()
                 if hasattr(app.state, "agent_worker"):
@@ -121,6 +142,7 @@ def create_app(settings: Settings | None = None, *, checkpointer=None, planner=N
         description="Local synthetic commerce. Approval and business state are authoritative; model output is not.",
     )
     app.state.service, app.state.factory, app.state.settings = service, factory, settings
+    app.state.pharmacy = pharmacy
     app.state.identity = identity_service
     app.state.protocol_gateway = protocol_gateway
     app.add_middleware(
@@ -147,6 +169,17 @@ def create_app(settings: Settings | None = None, *, checkpointer=None, planner=N
     app.add_middleware(Boundary, settings=settings, requests=REQUESTS, latency=LATENCY)
 
     def actor(request: Request):
+        if settings.product_mode == "pharmacy" and request.url.path.startswith(
+            (
+                "/api/v1/catalog",
+                "/api/v1/sessions",
+                "/api/v1/quotes",
+                "/api/v1/executions",
+                "/api/v1/grants",
+                "/api/v1/operator",
+            )
+        ):
+            raise HTTPException(404, "This product uses the pharmacy workflow.")
         return identity_service.authenticate(request)
 
     def operator(identity: Actor = Depends(actor)):
@@ -212,6 +245,18 @@ def create_app(settings: Settings | None = None, *, checkpointer=None, planner=N
             status_code=409,
         )
 
+    @app.get("/api/v1/product")
+    def product():
+        return {
+            "mode": settings.product_mode,
+            "name": "Asterfield Pharmacy"
+            if settings.product_mode == "pharmacy"
+            else "Agentic Commerce",
+            "synthetic": True,
+        }
+
+    register_pharmacy(app, pharmacy, actor, request_key)
+
     @app.get("/health/live")
     def live():
         return {"status": "ok", "version": "0.1.0", "mode": "local-synthetic"}
@@ -228,6 +273,7 @@ def create_app(settings: Settings | None = None, *, checkpointer=None, planner=N
         return {
             "status": "ready",
             "model_provider": settings.model_provider,
+            "product_mode": settings.product_mode,
             "worker": bool(
                 getattr(app.state, "worker", None)
                 and app.state.worker.thread
@@ -538,7 +584,7 @@ def create_app(settings: Settings | None = None, *, checkpointer=None, planner=N
     # MCP is an authenticated bounded tool transport, not an approval channel.
     from commerce.mcp import register_mcp
 
-    mcp_server = register_mcp(app, service, identity_service)
+    mcp_server = register_mcp(app, service, identity_service, pharmacy)
 
     FastAPIInstrumentor.instrument_app(app, excluded_urls="health/live,health/ready,metrics")
     built = Path(__file__).resolve().parents[2] / "web" / "dist"

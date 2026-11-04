@@ -46,7 +46,7 @@ services:
       com.agentic-commerce.scope: local-synthetic-demo
   packaged-seed:
     profiles: [packaged]
-    image: agentic-commerce:local-v0.2
+    image: agentic-commerce:local-pharmacy-v0.1
     user: "0:0"
     entrypoint: ["/bin/sh", "-ec"]
     command: ["mkdir -p /state; if test -e /state/protocol-keys.json; then cmp /seed/protocol-keys.json /state/protocol-keys.json; else cp /seed/protocol-keys.json /state/protocol-keys.json; fi; chown 10001:10001 /state /state/protocol-keys.json; chmod 700 /state; chmod 600 /state/protocol-keys.json"]
@@ -56,7 +56,7 @@ services:
     network_mode: none
   packaged-api:
     profiles: [packaged]
-    image: agentic-commerce:local-v0.2
+    image: agentic-commerce:local-pharmacy-v0.1
     build: .
     env_file: .local/packaged/api.env
     ports:
@@ -76,7 +76,7 @@ services:
         condition: service_healthy
   packaged-source:
     profiles: [packaged]
-    image: agentic-commerce:local-v0.2
+    image: agentic-commerce:local-pharmacy-v0.1
     command: ["python", "-m", "uvicorn", "commerce.simulator:create_source_app", "--factory", "--host", "0.0.0.0", "--port", "8511", "--no-access-log"]
     env_file: .local/packaged/source.env
     read_only: true

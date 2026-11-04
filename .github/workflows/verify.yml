@@ -50,6 +50,8 @@ jobs:
       - run: npm exec --prefix web -- playwright install --with-deps chromium
       - name: Isolated browser acceptance
         run: uv run python tools/browser_check.py
+      - name: Pharmacy customer and staff browser acceptance
+        run: uv run python tools/browser_check.py --product pharmacy
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

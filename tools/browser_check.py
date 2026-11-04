@@ -1,5 +1,6 @@
 """Run browser acceptance against disposable databases, preserving demo inventory."""
 
+import argparse
 import json
 import os
 import socket
@@ -21,6 +22,18 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--product", choices=["retail", "pharmacy"], default="retail")
+    parser.add_argument("--with-voice", action="store_true")
+    parser.add_argument("--record-demo", action="store_true")
+    parser.add_argument("--provider", choices=["baseline", "codex"], default="baseline")
+    args = parser.parse_args()
+    if args.provider == "codex" and not args.record_demo:
+        parser.error(
+            "Paid-allowance inference is limited to the explicitly requested demo recording."
+        )
+    if args.record_demo:
+        args.product, args.with_voice = "pharmacy", True
     for port in (8530, 8531):
         try:
             connection = socket.create_connection(("127.0.0.1", port), timeout=0.2)
@@ -47,8 +60,11 @@ def main():
             "COMMERCE_SIMULATOR_URL": "http://127.0.0.1:8531",
             "COMMERCE_PUBLIC_BASE_URL": "http://127.0.0.1:8530",
             "COMMERCE_BROWSER_BASE_URL": "http://127.0.0.1:8530",
-            "COMMERCE_MODEL_PROVIDER": "baseline",
+            "COMMERCE_MODEL_PROVIDER": args.provider,
             "COMMERCE_AUTH_MODE": "demo",
+            "COMMERCE_PRODUCT_MODE": args.product,
+            "COMMERCE_BROWSER_PRODUCT": args.product,
+            "COMMERCE_PHARMACY_DEMO_MINUTE": "1085",
             "COMMERCE_SCHEMA_BOOTSTRAP": "true",
             "COMMERCE_TRACE_ENABLED": "false",
             "COMMERCE_SIGNING_KEY": settings.signing_key.get_secret_value()
@@ -58,6 +74,14 @@ def main():
             "COMMERCE_ALLOWED_ORIGINS": json.dumps(["http://127.0.0.1:8530"]),
         }
     )
+    if args.provider == "codex":
+        # Disposable business fixtures still charge the normal durable allowance.
+        environment["COMMERCE_MODEL_BUDGET_DATABASE_URL"] = settings.database_url
+    if args.with_voice:
+        environment["COMMERCE_TEST_VOICE"] = "1"
+        environment["COMMERCE_TEST_AUDIO"] = str(ROOT / ".local/voice/fake-capture.wav")
+        if Path(settings.tts_python).is_file() and Path(settings.tts_model).is_dir():
+            environment["COMMERCE_TEST_NEURAL_VOICE"] = "1"
     processes = []
     created = []
     log = None
@@ -116,11 +140,52 @@ def main():
                         time.sleep(0.1)
                     else:
                         raise RuntimeError("Browser fixture service readiness timed out")
-            subprocess.run(
-                ["npm", "run", "test:e2e", "--prefix", "web"], cwd=ROOT, env=environment, check=True
+            command = (
+                ["node", "tools/record_pharmacy_demo.mjs"]
+                if args.record_demo
+                else ["npm", "run", "test:e2e", "--prefix", "web"]
             )
+            subprocess.run(command, cwd=ROOT, env=environment, check=True)
+            if args.record_demo:
+                recordings = sorted(
+                    (ROOT / ".local/demos").glob("*/recording.json"),
+                    key=lambda p: p.stat().st_mtime,
+                )
+                directory = recordings[-1].parent
+                with psycopg.connect(
+                    url.set(drivername="postgresql", database=names[0]).render_as_string(
+                        hide_password=False
+                    )
+                ) as fixture:
+                    decisions = fixture.execute(
+                        "SELECT data FROM audit_events WHERE event_type = 'pharmacy.intent_understood' ORDER BY created_at"
+                    ).fetchall()
+                    requests = fixture.execute(
+                        "SELECT state, provider FROM pharmacy_pickup_requests ORDER BY created_at"
+                    ).fetchall()
+                with psycopg.connect(
+                    url.set(drivername="postgresql", database=names[1]).render_as_string(
+                        hide_password=False
+                    )
+                ) as fixture:
+                    commands = fixture.execute(
+                        "SELECT action, count(*) FROM source_commands GROUP BY action ORDER BY action"
+                    ).fetchall()
+                (directory / "backend-evidence.json").write_text(
+                    json.dumps(
+                        {
+                            "decisions": [d[0] for d in decisions],
+                            "requests": [
+                                {"state": state, "provider": provider}
+                                for state, provider in requests
+                            ],
+                            "source_commands": dict(commands),
+                        },
+                        indent=2,
+                    )
+                )
             print(
-                "Browser acceptance passed against disposable synthetic databases; main inventory/history unchanged."
+                "Browser journey completed against disposable synthetic databases; main inventory/history unchanged."
             )
         finally:
             for process in reversed(processes):

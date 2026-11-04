@@ -6,6 +6,457 @@
     "version": "0.1.0"
   },
   "paths": {
+    "/api/v1/product": {
+      "get": {
+        "summary": "Product",
+        "operationId": "product_api_v1_product_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pharmacy/workspace": {
+      "get": {
+        "tags": [
+          "Family pickup"
+        ],
+        "summary": "Workspace",
+        "operationId": "workspace_api_v1_pharmacy_workspace_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pharmacy/voice": {
+      "get": {
+        "tags": [
+          "Family pickup"
+        ],
+        "summary": "Voice Status",
+        "operationId": "voice_status_api_v1_pharmacy_voice_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pharmacy/voice/transcribe": {
+      "post": {
+        "tags": [
+          "Family pickup"
+        ],
+        "summary": "Transcribe",
+        "operationId": "transcribe_api_v1_pharmacy_voice_transcribe_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pharmacy/permissions": {
+      "post": {
+        "tags": [
+          "Family pickup"
+        ],
+        "summary": "Permission",
+        "operationId": "permission_api_v1_pharmacy_permissions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PermissionInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pharmacy/permissions/{identifier}": {
+      "delete": {
+        "tags": [
+          "Family pickup"
+        ],
+        "summary": "Revoke",
+        "operationId": "revoke_api_v1_pharmacy_permissions__identifier__delete",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Identifier"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pharmacy/requests": {
+      "post": {
+        "tags": [
+          "Family pickup"
+        ],
+        "summary": "Create",
+        "operationId": "create_api_v1_pharmacy_requests_post",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PickupInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pharmacy/requests/{identifier}/speech": {
+      "post": {
+        "tags": [
+          "Family pickup"
+        ],
+        "summary": "Speak",
+        "operationId": "speak_api_v1_pharmacy_requests__identifier__speech_post",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Identifier"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpeechStatus"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pharmacy/requests/{identifier}": {
+      "get": {
+        "tags": [
+          "Family pickup"
+        ],
+        "summary": "Detail",
+        "operationId": "detail_api_v1_pharmacy_requests__identifier__get",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Identifier"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pharmacy/requests/{identifier}/approval": {
+      "post": {
+        "tags": [
+          "Family pickup"
+        ],
+        "summary": "Approve",
+        "operationId": "approve_api_v1_pharmacy_requests__identifier__approval_post",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Identifier"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExactApproval"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pharmacy/requests/{identifier}/cancel": {
+      "post": {
+        "tags": [
+          "Family pickup"
+        ],
+        "summary": "Cancel",
+        "operationId": "cancel_api_v1_pharmacy_requests__identifier__cancel_post",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Identifier"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pharmacy/staff": {
+      "get": {
+        "tags": [
+          "Family pickup"
+        ],
+        "summary": "Staff",
+        "operationId": "staff_api_v1_pharmacy_staff_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pharmacy/staff/orders/{identifier}": {
+      "post": {
+        "tags": [
+          "Family pickup"
+        ],
+        "summary": "Progress",
+        "operationId": "progress_api_v1_pharmacy_staff_orders__identifier__post",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Identifier"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StaffAction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/health/live": {
       "get": {
         "summary": "Live",
@@ -840,6 +1291,22 @@
         ],
         "title": "ApprovalRequest"
       },
+      "ExactApproval": {
+        "properties": {
+          "quote_digest": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 64,
+            "title": "Quote Digest"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "quote_digest"
+        ],
+        "title": "ExactApproval"
+      },
       "ExecutionRequest": {
         "properties": {
           "quote_id": {
@@ -993,6 +1460,84 @@
         "type": "object",
         "title": "LoginRequest"
       },
+      "PermissionInput": {
+        "properties": {
+          "members": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "self",
+                "dad",
+                "mom",
+                "sister"
+              ]
+            },
+            "type": "array",
+            "maxItems": 4,
+            "minItems": 1,
+            "title": "Members"
+          },
+          "per_order_minor": {
+            "type": "integer",
+            "maximum": 100000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Per Order Minor"
+          },
+          "total_minor": {
+            "type": "integer",
+            "maximum": 300000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Total Minor"
+          },
+          "max_orders": {
+            "type": "integer",
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Max Orders",
+            "default": 3
+          },
+          "valid_for_seconds": {
+            "type": "integer",
+            "maximum": 86400.0,
+            "minimum": 60.0,
+            "title": "Valid For Seconds",
+            "default": 86400
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "members",
+          "per_order_minor",
+          "total_minor"
+        ],
+        "title": "PermissionInput"
+      },
+      "PickupInput": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 3,
+            "title": "Text"
+          },
+          "channel": {
+            "type": "string",
+            "enum": [
+              "text",
+              "voice"
+            ],
+            "title": "Channel",
+            "default": "text"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "PickupInput"
+      },
       "PriceUpdate": {
         "properties": {
           "price_minor": {
@@ -1035,6 +1580,58 @@
           "request"
         ],
         "title": "SessionRequest"
+      },
+      "SpeechStatus": {
+        "properties": {
+          "state": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "State"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "state"
+        ],
+        "title": "SpeechStatus"
+      },
+      "StaffAction": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "ready",
+              "reject",
+              "collect"
+            ],
+            "title": "Action"
+          },
+          "clinical_review_confirmed": {
+            "type": "boolean",
+            "title": "Clinical Review Confirmed",
+            "default": false
+          },
+          "pickup_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 12
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pickup Code"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action"
+        ],
+        "title": "StaffAction"
       },
       "ValidationError": {
         "properties": {

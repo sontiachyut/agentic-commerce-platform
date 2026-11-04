@@ -34,6 +34,8 @@ class HttpSource:
             raise SourceUnavailable("Source result is unresolved") from exc
         if not isinstance(value, dict):
             raise SourceConflict("Invalid source observation shape")
+        if value.get("workflow", "kiosk") != request.workflow:
+            raise SourceConflict("Source observation belongs to another workflow")
         # Receiving valid JSON is not enough. Bind every observation to our command.
         if any(
             value.get(key) != expected

@@ -19,6 +19,13 @@ class Settings(BaseSettings):
     metrics_token: SecretStr = SecretStr("")
     demo_mode: bool = True
     schema_bootstrap: bool = True
+    product_mode: Literal["retail", "pharmacy"] = "pharmacy"
+    pharmacy_demo_minute: int | None = Field(default=None, ge=0, le=1439)
+    voice_enabled: bool = True
+    voice_executable: str = ".local/voice/whisper.cpp/build/bin/whisper-cli"
+    voice_model: str = ".local/voice/ggml-tiny.en.bin"
+    tts_python: str = ".local/voice/tts-venv/bin/python"
+    tts_model: str = ".local/voice/tts-model"
     auth_mode: Literal["demo", "oidc"] = "demo"
     public_base_url: str = "http://127.0.0.1:8510"
     oidc_issuer: str = "http://127.0.0.1:8850/realms/commerce"
@@ -36,6 +43,7 @@ class Settings(BaseSettings):
     job_lease_seconds: int = 360
     max_job_attempts: int = 50
     max_active_sessions_per_user: int = Field(default=5, ge=1, le=50)
+    model_budget_database_url: SecretStr | None = None
     max_daily_model_calls: int = Field(default=20, ge=1, le=100)
     max_model_calls_per_session: int = Field(default=4, ge=2, le=10)
     cookie_secure: bool = False
