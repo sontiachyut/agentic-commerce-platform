@@ -1,95 +1,96 @@
-# Agentic Commerce — AI-Powered Autonomous Shopping & Payment Platform
+# Agentic Commerce
 
-A planned AI purchasing system that selects products at a virtual kiosk, verifies explicit purchasing authority, and coordinates sandbox payment and fulfillment through authoritative backend state.
+A purchasing workspace where an agent can find an item, prepare an exact quote and coordinate a purchase within the user's authority. Deterministic backend rules control money, inventory and execution; confirmed source states control what the user is told.
 
-**Architecture and implementation planning. Application development has not started.**
+**v0.1: working local demonstration, using synthetic products, payments and fulfillment.** It is a foundation for a client-specific implementation, with explicit production gates. See [verified status](docs/STATUS.md).
 
-## Why this project
+## Try it locally
 
-“Find a protein bar under $4 at Kiosk A and buy it” requires more than an LLM choosing a tool. Price and stock can change, permission can expire, a payment can time out after succeeding, and dispensing can fail after checkout begins. The agent must act within the user's authority and report what actually happened.
+Prerequisites: Python 3.12, uv, Node 22+, Docker with Compose. The AI mode additionally needs the Codex CLI signed in with your own eligible ChatGPT account. No separately billed model API key is required for this local mode. A rule baseline runs without an LLM.
 
-I am building this project to study applied AI engineering at the boundary between interpretation and consequential business workflows: typed tools, deterministic authorization, commerce state, durable execution, adversarial evaluation, and failure recovery. The initial system is a software simulation of unattended retail, with no real vending hardware or funds.
-
-## Proposed approach
-
-- Start with one user, one kiosk, a small catalog and explicitly human-approved sandbox purchases.
-- Use one LangGraph agent to interpret requests, compare candidates, request approval and monitor outcomes.
-- Keep prices, inventory, spending permissions, checkout, payment and dispensing decisions in deterministic application modules.
-- Bind approval to immutable checkout details; reject replay, changed price, expired/revoked permission and unauthorized merchant/product.
-- Add delegated autonomous purchases only after the complete human-approved workflow passes its acceptance tests.
-- Integrate with the [Java payment platform](https://github.com/sontiachyut/payment-processing-cleanroom-implementation) through versioned commands/events; use a narrow simulated provider independently.
-
-## Proposed architecture
-
-All components below are planned logical boundaries; the first version does not require six deployed services.
-
-```mermaid
-flowchart TB
-    User[User and trusted approval UI] --> API[FastAPI session and checkout boundary]
-    API --> Agent[Single LangGraph purchasing workflow]
-    Agent --> Read[Scoped catalog, quote and status tools]
-    Agent --> Execute[Request execution of an approved checkout]
-    Execute --> Policy[Deterministic authorization and policy]
-    Policy --> Commerce[Virtual kiosk, stock reservation and order coordinator]
-    Commerce --> Payment[Payment adapter]
-    Payment --> Provider[Standalone simulator or Java payment platform]
-    Commerce --> Dispense[Idempotent simulated dispensing]
-    API --> DB[(PostgreSQL business state)]
-    Commerce --> DB
-    Agent --> Checkpoint[(Separate graph checkpoints)]
+```bash
+uv sync --locked
+uv run python tools/dev.py init
+docker compose -p agentic-commerce up -d postgres
+uv run alembic upgrade head
+npm ci --prefix web
+npm run build --prefix web
+uv run python tools/stack.py up --provider codex
 ```
 
-The agent does not hold signing keys, user credentials or raw payment mutation authority. Its execution request is checked by the backend against current approval, quote, inventory and command identity. Final user messages must reflect authoritative order, payment and fulfillment state.
+Open **http://127.0.0.1:8510**, enter Alex's synthetic workspace, and ask:
 
-## Public engineering references
+> Find a cocoa protein bar under $4 at Kiosk A.
 
-[Medusa](https://github.com/medusajs/medusa) informs commerce modules, reservations and compensating workflows; [Google AP2](https://github.com/google-agentic-commerce/AP2) informs verifiable purchasing authority and checkout binding; [LangGraph](https://github.com/langchain-ai/langgraph) provides stateful orchestration, checkpoint and human-interrupt patterns. [Reference analysis](docs/reference-analysis.md) records pinned source files, inspected tests, licensing, limitations, and ideas adopted/rejected.
+Review the item, exact amount and expiry, then approve. The app reports completion after both capture and simulated delivery are confirmed. Purchase history and activity explain the outcome. The Failure lab can deliberately lose a payment response, fail delivery or interrupt a source without using real funds.
 
-This is an original smaller design, not a port of Medusa or a claim of AP2/UCP/ACP/TAP compliance. Protocol interoperability is optional later work with explicit conformance gates.
+Use `--provider baseline` instead for deterministic development and browser tests. Baseline mode is visibly labeled and does not claim to be AI. Stop before switching providers:
 
-## Planned stack
+```bash
+uv run python tools/stack.py down
+uv run python tools/stack.py up --provider baseline
+```
 
-| Layer | Baseline and purpose |
+The lifecycle tool preserves business data. It does not remove PostgreSQL volumes. [Setup, troubleshooting and recovery](docs/operations-runbook.md).
+
+## What is implemented
+
+- A bounded LangGraph workflow: understand → discover → select → quote → approval pause → request execution.
+- A local Codex adapter with strict structured outputs, disabled shell/web/plugin tools, a deadline and durable call caps. Models interpret and select; they cannot approve themselves.
+- Immutable quote snapshots and authenticated exact approvals. Product price/version, expiry, ownership and current authority are checked again at acceptance.
+- Delegated permissions with product/kiosk scope, per-purchase limits, lifetime budget, purchase counts and revocation.
+- Atomic PostgreSQL stock/budget holds and a durable checkout job. Repeating a checkout resolves to its original execution.
+- An independent stateful source simulator with authorization, dispense, capture, cancellation, refund and inquiry. Response loss is different from confirmed failure.
+- Recovery workers, bounded retries, operator review, audit events, redacted OpenTelemetry traces and local HTTP metrics.
+- A React/TypeScript workspace for shopping, approvals, history, permissions and operations; a small authenticated read-only MCP subset.
+
+```mermaid
+flowchart LR
+    UI[Shopper workspace] --> API[FastAPI / identity and policy]
+    API --> DB[(Commerce state and jobs)]
+    DB --> Agent[LangGraph + local Codex]
+    Agent --> API
+    DB --> Worker[Durable checkout worker]
+    Worker --> Source[Synthetic payment / fulfillment source]
+    Source --> SourceDB[(Independent effects)]
+    API --> Review[Operator activity and recovery]
+```
+
+The Java payment project is optional future integration, not a prerequisite. This application does not read its database or depend on it to run.
+
+## Verification
+
+```bash
+uv run ruff check src tests tools migrations
+uv run ruff format --check src tests tools migrations
+uv run pytest -q --cov=commerce
+npm run build --prefix web
+npm exec --prefix web -- playwright install chromium
+uv run python tools/stack.py up --provider baseline
+npm run test:e2e --prefix web
+```
+
+Tests use dedicated PostgreSQL test databases and refuse other database names. Browser tests consume synthetic catalog inventory in the running demonstration; use a disposable local environment for repeated suites. The workflow in `.github/workflows/verify.yml` provisions a fresh CI database. See the [verification report](docs/verification-report.md) for measured results and what they do not establish.
+
+## Integration boundaries
+
+AP2, Visa TAP, UCP and ACP are **target integrations**. This release implements internal purchasing authority and checkout contracts; it does not claim those external wire protocols, network onboarding or conformance. MCP currently exposes only `search_products` and `get_purchase_status`. [Exact support matrix](docs/protocol-support.md).
+
+The signed-in Codex runtime is for an owner-operated local application. A hosted customer service needs a supported inference arrangement, production identity, payment onboarding and the remaining release gates. A subscription is not a transferable hosted inference API. No real payment details are collected here.
+
+## Documentation
+
+| Read next | Purpose |
 | --- | --- |
-| API/data | Python 3.12, FastAPI, Pydantic, PostgreSQL, SQLAlchemy, Alembic |
-| Agent | LangGraph; one OpenAI or Anthropic provider selected through evaluation, with deterministic fakes for ordinary tests |
-| Reliable work | Durable PostgreSQL business jobs/checkpoints first; Celery/Redis only when a demonstrated worker requirement justifies them |
-| Operator/user UI | React, TypeScript, Tailwind; trusted approvals and distinct order/payment/fulfillment views |
-| Evaluation/visibility | Langfuse, OpenTelemetry, bounded redacted traces; versioned evaluation corpus |
-| Verification | pytest, Testcontainers; k6 for deterministic simulator load, not an LLM loop |
-| Environments | Docker Compose locally; GitHub Actions and AWS ECS only in later separately approved work |
+| [Status](docs/STATUS.md) | Implemented, verified and outstanding work |
+| [Client demonstration](docs/client-demo.md) | A short business-focused walkthrough |
+| [Runtime architecture](docs/runtime-architecture.md) | State ownership, transactions, saga and workers |
+| [API reference](docs/api-reference.md) | Authentication, contracts and retry semantics |
+| [Operations runbook](docs/operations-runbook.md) | Setup, recovery, backup and support |
+| [Threat model](docs/threat-model.md) / [Security](SECURITY.md) | Controls, trust boundaries and release limits |
+| [Verification report](docs/verification-report.md) | Executed checks and reproducible evidence |
+| [Engineering guide](docs/engineering-guide.md) | Learn the implementation and its tradeoffs |
+| [Requirements](docs/requirements.md) / [Scenarios](docs/production-scenarios.md) | Original capability targets and acceptance cases |
+| [Design decisions](docs/adr/008-standalone-local-release.md) / [Reference analysis](docs/reference-analysis.md) | Decisions, pinned research and limitations |
 
-Full-text/pgvector, MCP, OpenFGA, Temporal, Kubernetes isolation and multiple agents are optional decisions, not initial requirements. [Architecture and adoption](docs/architecture.md).
-
-## Engineering depth
-
-The [ten mandatory commerce scenarios](docs/production-scenarios.md) cover human approval, delegated budgets, price changes, last-item races, duplicate execution, expiry/revocation, paid-but-failed dispensing, agent crash recovery, prompt injection and forbidden merchant/product selection.
-
-Key decisions: business state independent of graph state; exact backend policy before financial effects; atomic inventory/budget reservation within commerce; explicit cross-system saga and uncertainty; idempotent dispense commands; human-first MVP. No single transaction spans commerce, payment processor and fulfillment. [ADRs](docs/adr/001-boundaries.md).
-
-## Roadmap and validation
-
-| Milestones | Planned outcome |
-| --- | --- |
-| 0 | Source research, architecture, documentation; current authorization only |
-| 1–4 | API/business-state foundations, kiosk model, bounded agent and discovery tools |
-| 5–6 | Trusted approval, deterministic policy, checkout/reservations and standalone payment slice |
-| 7–8 | Delegated authority, revocation/replay protection, durable recovery and concurrency |
-| 9–10 | Java integration, compensation, full evaluation/security/observability and approved deployment |
-| Optional 11 | Protocol interoperability, external agent identity and stronger isolation |
-
-All application milestones are unstarted and require explicit approval. [Detailed plan](docs/implementation-plan.md) and [learning roadmap](docs/learning-roadmap.md).
-
-No executable application, agents, API scaffold, migrations, automated tests or infrastructure configuration exists yet. Running instructions will be added as working milestones are verified. There are no measured accuracy, latency, cost or throughput results.
-
-Validation is designed before implementation: deterministic money/stock/policy checks, real-database races, crash/replay/compensation tests, separate held-out model evaluation, and a source-of-truth reporting gate. High-volume testing uses deterministic simulators; Stripe sandbox and LLM APIs stay outside the load lane. [Evaluation](docs/evaluation-plan.md) and [testing](docs/testing-strategy.md).
-
-## Technical documentation
-
-- [Requirements](docs/requirements.md), [reference analysis](docs/reference-analysis.md), [architecture](docs/architecture.md)
-- [Commerce domain](docs/commerce-domain-model.md), [kiosk and checkout](docs/kiosk-and-checkout-design.md)
-- [Agent workflow](docs/agent-workflow-design.md), [authorization and mandates](docs/authorization-and-mandates.md)
-- [Payment contracts and shared recovery flows](docs/payment-integration-contracts.md)
-- [Ten production scenarios](docs/production-scenarios.md), [security](docs/security-design.md), [evaluation](docs/evaluation-plan.md)
-- [Implementation plan](docs/implementation-plan.md), [learning](docs/learning-roadmap.md), [testing](docs/testing-strategy.md)
-- [Risks](docs/risks-and-constraints.md), [future approved-milestone workflow](AGENTS.md)
+Earlier architecture documents preserve the broader design target. Runtime status takes precedence over their historical milestone labels. [Contribution guide](CONTRIBUTING.md).

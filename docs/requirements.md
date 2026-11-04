@@ -1,6 +1,6 @@
 # Proposed product requirements
 
-**Planning baseline:** 2026-10-21. No application exists; milestone 0 only.
+**Design baseline:** 2026-10-21. A standalone v0.1 implementation now exists. See [current status](STATUS.md) and [runtime architecture](runtime-architecture.md) for implemented scope and evidence; this document preserves the broader capability target.
 
 ## Users and primary workflow
 

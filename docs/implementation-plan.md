@@ -1,6 +1,6 @@
 # Milestone-controlled commerce implementation plan
 
-Only milestone 0 is authorized now. M1–M10 and optional M11 are unstarted and require approval. Teach problem→show pinned source/tests→discuss alternatives→obtain milestone approval→generate owner/Codex code within scope→validate/debug→explain paths→ask understanding questions→record evidence. Code generation alone is not completion.
+The owner authorized standalone implementation on 2026-11-04. [ADR 008](adr/008-standalone-local-release.md) supersedes the original planning-only approval gate and Java prerequisite. [Status](STATUS.md) records actual implementation and verification. The milestones below preserve the original learning/design sequence; their historical approval dependencies are not new requests for permission within the authorized standalone scope. Code generation alone is not completion.
 
 ## M0 — Research and planning
 

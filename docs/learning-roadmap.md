@@ -1,6 +1,6 @@
 # Just-in-time learning roadmap
 
-Read/teach only what the next approved task requires, inspect pinned source/tests, predict failure and verify it. Future approval permits Codex implementation within that milestone, followed by explanation and understanding review.
+The standalone build is now authorized and implemented in v0.1. Start with the [code walkthrough](engineering-guide.md), inspect pinned source/tests, predict failure and verify it. This table preserves the broader learning sequence; [status](STATUS.md) records remaining work.
 
 | Before milestone | Learn now | Concrete exercise / authoritative source |
 | --- | --- | --- |

@@ -1,6 +1,6 @@
 # Proposed security, authorization and audit boundaries
 
-No security implementation exists. Synthetic-only simulation reduces exposure but does not establish security or protocol compliance. Threat model includes accidental model mistakes, malicious merchant/product content, replaying clients, stale workers and compromised low-privilege tool context.
+The local release implements the controls described in the [current threat model](threat-model.md). This document preserves the broader security design target; it does not establish implementation or conformance for every proposed mechanism. Synthetic-only simulation reduces exposure but does not establish security or protocol compliance. Threat model includes accidental model mistakes, malicious merchant/product content, replaying clients, stale workers and compromised low-privilege tool context.
 
 ## Trust map
 

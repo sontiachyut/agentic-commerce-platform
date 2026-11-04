@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17-alpine@sha256:266d3c257594e195b309ae9d1805e54c788f1d7b375f56bf6c367aac6c917e7b
+    environment:
+      POSTGRES_USER: commerce
+      POSTGRES_PASSWORD: local-demo-only
+      POSTGRES_DB: commerce
+    ports:
+      - "127.0.0.1:55439:5432"
+    volumes:
+      - commerce-data:/var/lib/postgresql/data
+      - ./infra/init.sql:/docker-entrypoint-initdb.d/01-databases.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U commerce -d commerce"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    labels:
+      com.agentic-commerce.scope: local-synthetic-demo
+volumes:
+  commerce-data:

@@ -1,6 +1,6 @@
 # Risks and open design decisions
 
-All proposed mechanisms need future tests. No accuracy, cost, scale, adoption, security certification or protocol compliance is claimed.
+See [current status](STATUS.md) and [verification](verification-report.md) for tested mechanisms. Remaining mechanisms still need implementation and verification. No broad accuracy, cost, scale, adoption, security certification or protocol-compliance claim is made.
 
 | Risk | Mitigation / review gate |
 | --- | --- |
