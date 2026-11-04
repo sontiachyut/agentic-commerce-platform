@@ -5,7 +5,7 @@ export default defineConfig({
   workers: 1,
   timeout: 45000,
   use: {
-    baseURL: "http://127.0.0.1:8510",
+    baseURL: process.env.COMMERCE_BROWSER_BASE_URL || "http://127.0.0.1:8510",
     screenshot: "only-on-failure",
     trace: "retain-on-failure",
   },

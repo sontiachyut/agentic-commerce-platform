@@ -98,8 +98,12 @@ def test_api_auth_csrf_scope_and_idempotency(system):
 def test_mcp_exposes_no_approval_or_payment_tools(system):
     app = create_app(system.settings, checkpointer=InMemorySaver(), source=system.worker.source)
     with TestClient(app) as client:
-        login = client.post("/api/v1/auth/demo", json={"persona": "alex"}).json()
-        headers = {"X-CSRF-Token": login["csrf_token"]}
+        client.post("/api/v1/auth/demo", json={"persona": "alex"}).json()
+        headers = {
+            "Authorization": "Bearer " + client.cookies["commerce_session"],
+            "Accept": "application/json, text/event-stream",
+            "MCP-Protocol-Version": "2025-11-25",
+        }
         tools = client.post(
             "/mcp", json={"jsonrpc": "2.0", "id": 1, "method": "tools/list"}, headers=headers
         ).json()
@@ -115,7 +119,7 @@ def test_mcp_exposes_no_approval_or_payment_tools(system):
             },
             headers=headers,
         ).json()
-        assert denied["error"]["code"] == -32602
+        assert denied["result"]["isError"] is True
 
 
 def test_ambiguous_request_stops_without_checkout(system):
@@ -130,8 +134,12 @@ def test_ambiguous_request_stops_without_checkout(system):
 def test_malformed_mcp_parameters_do_not_crash_api(system):
     app = create_app(system.settings, checkpointer=InMemorySaver(), source=system.worker.source)
     with TestClient(app) as client:
-        login = client.post("/api/v1/auth/demo", json={"persona": "alex"})
-        headers = {"X-CSRF-Token": login.json()["csrf_token"]}
+        client.post("/api/v1/auth/demo", json={"persona": "alex"})
+        headers = {
+            "Authorization": "Bearer " + client.cookies["commerce_session"],
+            "Accept": "application/json, text/event-stream",
+            "MCP-Protocol-Version": "2025-11-25",
+        }
         for params in ([], {"name": []}, {"name": {}, "arguments": {}}):
             response = client.post(
                 "/mcp",

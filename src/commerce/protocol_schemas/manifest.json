@@ -1,0 +1,28 @@
+{
+  "ucp": {
+    "version": "2026-08-25",
+    "revision": "87dd4b1fcff9105d68173120897237fa784c74ef"
+  },
+  "acp": {
+    "version": "2026-04-17",
+    "revision": "7fdd78df677a94dce04c770644b0fbbb1401272b"
+  },
+  "compiler": "ucp-schema 1.4.1",
+  "files": {
+    "acp/LICENSE": "4458503dd48e88c4e0b945fb252a08b93c40ec757309b8ffa7c594dfa1e35104",
+    "acp/checkout.json": "d0e4290617d66bf05d002b8ace388732be2b3eb9a92a1003db7a2daa1e0436f2",
+    "ucp/LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "ucp/ap2_complete_request.json": "4c992b09d57dde85cbfc10df0f22d6ff5a678ededfeb3c347e05c5f734fb4fac",
+    "ucp/cancel_request.json": "0c7132ff6d58b57e266a40d815b4d7bd98ed76910eb74f7fad8ab8c3a54c7b40",
+    "ucp/cancel_response.json": "5a7df555981e13b065c7af877422d75af7933f3640b9f9b474b583251bc7493e",
+    "ucp/complete_request.json": "60c22be8879ada20aeb3ceb4c0a5ea3e67d813a4fc379529f0c894acd7dd4a34",
+    "ucp/complete_response.json": "5a7df555981e13b065c7af877422d75af7933f3640b9f9b474b583251bc7493e",
+    "ucp/create_request.json": "2b2da476075837eacf90aa70f097437a095c0e21236811cf20f4caad2d091bae",
+    "ucp/create_response.json": "5a7df555981e13b065c7af877422d75af7933f3640b9f9b474b583251bc7493e",
+    "ucp/discovery.json": "2d0a96a3d779f5d7bf05659c6e114d9ee3661aaa550f304565a6fd2f26258b63",
+    "ucp/read_request.json": "0c7132ff6d58b57e266a40d815b4d7bd98ed76910eb74f7fad8ab8c3a54c7b40",
+    "ucp/read_response.json": "5a7df555981e13b065c7af877422d75af7933f3640b9f9b474b583251bc7493e",
+    "ucp/update_request.json": "948727062f4591692872dc030e3c3e3fcdefa7ed44d7c0f956c584d9bd6c132b",
+    "ucp/update_response.json": "5a7df555981e13b065c7af877422d75af7933f3640b9f9b474b583251bc7493e"
+  }
+}

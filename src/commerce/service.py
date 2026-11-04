@@ -94,10 +94,7 @@ class CommerceService:
                 if intent:
                     if intent.category != "any" and p.category != intent.category:
                         continue
-                    if (
-                        intent.max_amount_minor is not None
-                        and p.price_minor > intent.max_amount_minor
-                    ):
+                    if not intent.permits_amount(p.price_minor, p.currency):
                         continue
                     if p.stock - p.reserved < 1:
                         continue
@@ -228,10 +225,9 @@ class CommerceService:
                 raise DomainError(
                     "PRODUCT_SCOPE", "The selected product does not match the shopping request."
                 )
-            if (
-                intent.max_amount_minor is not None
-                and product.price_minor > intent.max_amount_minor
-            ):
+            if intent.quantity != 1 or intent.currency != "USD":
+                raise DomainError("UNSUPPORTED_REQUEST", "Only one item in USD is supported.")
+            if not intent.permits_amount(product.price_minor, product.currency):
                 raise DomainError(
                     "OVER_BUDGET", "The selected product exceeds the requested budget."
                 )
@@ -342,6 +338,14 @@ class CommerceService:
                 )
             if quote.digest != digest(canonical_terms(quote)):
                 raise DomainError("QUOTE_TAMPERED", "The purchase terms could not be verified.")
+            session = own(db.get(PurchaseSession, quote.session_id), actor)
+            intent = Intent.model_validate(session.intent)
+            if intent.quantity != quote.quantity or not intent.permits_amount(
+                quote.amount_minor, quote.currency
+            ):
+                raise DomainError(
+                    "REQUEST_CONSTRAINT", "The quote does not satisfy the original request."
+                )
             if bool(request.approval_id) == bool(request.grant_id):
                 raise DomainError(
                     "AUTHORITY_REQUIRED",

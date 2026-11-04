@@ -5,7 +5,7 @@ import time
 from opentelemetry import trace
 from sqlalchemy import and_, or_, select
 
-from commerce.models import Execution, Grant, Job, Order, Product, Quote, new_id
+from commerce.models import Execution, Grant, Job, Order, Product, PurchaseSession, Quote, new_id
 from commerce.payments import SourceConflict, SourceUnavailable
 from commerce.planner import ModelUnavailable
 from commerce.schemas import Actor
@@ -48,6 +48,14 @@ class Worker:
                 select(Job)
                 .where(
                     Job.kind.in_(self.kinds),
+                    or_(
+                        Job.kind != "AGENT",
+                        Job.resource_id.in_(
+                            select(PurchaseSession.id).where(
+                                PurchaseSession.model_provider == self.settings.model_provider
+                            )
+                        ),
+                    ),
                     or_(
                         and_(Job.state == "READY", Job.available_at <= now),
                         and_(Job.state == "RUNNING", Job.lease_until < now),

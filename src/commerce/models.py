@@ -182,3 +182,59 @@ class AuditEvent(Base):
     event_type: Mapped[str] = mapped_column(String(64))
     data: Mapped[dict] = mapped_column(JSON, default=dict)
     created_at: Mapped[float] = mapped_column(Float, default=time.time)
+
+
+class BrowserSession(Base):
+    __tablename__ = "browser_sessions"
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    actor: Mapped[dict] = mapped_column(JSON)
+    csrf: Mapped[str] = mapped_column(String(64))
+    auth_source: Mapped[str] = mapped_column(String(16))
+    issuer: Mapped[str] = mapped_column(String(300))
+    subject: Mapped[str] = mapped_column(String(200))
+    expires_at: Mapped[float] = mapped_column(Float, index=True)
+    token_expires_at: Mapped[float | None] = mapped_column(Float)
+    encrypted_tokens: Mapped[str | None] = mapped_column(Text)
+    revoked: Mapped[bool] = mapped_column(default=False)
+    created_at: Mapped[float] = mapped_column(Float, default=time.time)
+
+
+class LoginAttempt(Base):
+    __tablename__ = "login_attempts"
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    browser_binding: Mapped[str] = mapped_column(String(64))
+    nonce: Mapped[str] = mapped_column(String(64))
+    encrypted_verifier: Mapped[str] = mapped_column(Text)
+    expires_at: Mapped[float] = mapped_column(Float)
+    consumed: Mapped[bool] = mapped_column(default=False)
+
+
+class ReplayNonce(Base):
+    __tablename__ = "replay_nonces"
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    expires_at: Mapped[float] = mapped_column(Float, index=True)
+
+
+class ProtocolEnvelope(Base):
+    __tablename__ = "protocol_envelopes"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    quote_id: Mapped[str] = mapped_column(ForeignKey("quotes.id"), unique=True)
+    tenant_id: Mapped[str] = mapped_column(String(64), index=True)
+    user_id: Mapped[str] = mapped_column(String(64))
+    encrypted_bundle: Mapped[str] = mapped_column(Text)
+    authority: Mapped[dict] = mapped_column(JSON)
+    created_at: Mapped[float] = mapped_column(Float, default=time.time)
+
+
+class ProtocolCommand(Base):
+    __tablename__ = "protocol_commands"
+    __table_args__ = (
+        UniqueConstraint("checkout_scope", name="protocol_commands_checkout_scope_key"),
+    )
+    checkout_scope: Mapped[str | None] = mapped_column(String(64))
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    request_digest: Mapped[str] = mapped_column(String(64))
+    state: Mapped[str] = mapped_column(String(16))
+    encrypted_response: Mapped[str | None] = mapped_column(Text)
+    lease_until: Mapped[float] = mapped_column(Float)
+    created_at: Mapped[float] = mapped_column(Float, default=time.time)

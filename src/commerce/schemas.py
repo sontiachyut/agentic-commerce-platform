@@ -11,6 +11,7 @@ class Actor(StrictModel):
     user_id: str
     tenant_id: str = "demo"
     role: Literal["shopper", "operator"] = "shopper"
+    display_name: str | None = Field(default=None, max_length=80)
 
 
 class LoginRequest(StrictModel):
@@ -61,9 +62,11 @@ class PriceUpdate(StrictModel):
 class Intent(StrictModel):
     query: str = Field(default="", max_length=160)
     category: Literal["protein-bar", "snack", "drink", "any"] = "any"
-    kiosk_id: str = Field(default="kiosk-a", max_length=64)
+    kiosk_id: str = Field(default="kiosk-a", min_length=1, max_length=64)
     max_amount_minor: int | None = Field(default=None, gt=0, le=1_000_000)
-    quantity: int = Field(default=1, ge=1, le=1)
+    budget_comparison: Literal["lt", "lte"] = "lte"
+    currency: str = Field(default="USD", pattern="^[A-Z]{3}$")
+    quantity: int = Field(default=1, ge=1, le=100)
     clarification: str | None = Field(default=None, max_length=300)
 
     @field_validator("kiosk_id", mode="before")
@@ -72,6 +75,15 @@ class Intent(StrictModel):
         if isinstance(value, str):
             return "-".join(value.strip().lower().replace("_", " ").replace("-", " ").split())
         return value
+
+    def permits_amount(self, amount_minor: int, currency: str) -> bool:
+        if currency != self.currency or self.max_amount_minor is None:
+            return False
+        return (
+            amount_minor < self.max_amount_minor
+            if self.budget_comparison == "lt"
+            else amount_minor <= self.max_amount_minor
+        )
 
 
 class Selection(StrictModel):

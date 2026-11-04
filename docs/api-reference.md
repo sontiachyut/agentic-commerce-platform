@@ -56,3 +56,10 @@ POST `/mcp` uses the same authenticated boundary and CSRF rules. It accepts JSON
 Business errors use `{"error":{"code":"...","message":"..."}}` with an appropriate HTTP status; request IDs appear where available. Validation errors list field paths without echoing rejected inputs. Examples include `AUTHORITY_REQUIRED`, `QUOTE_EXPIRED`, `PRICE_CHANGED`, `OUT_OF_STOCK`, `GRANT_INACTIVE`, `GRANT_EXHAUSTED`, `GRANT_SCOPE`, `ADMISSION_LIMIT` and `IDEMPOTENCY_CONFLICT`.
 
 Never interpret a transport timeout as a declined purchase. Retry with the same idempotency identity or query the existing resource. Do not create a new request key to work around an uncertain result. A source conflict or unresolved effect may require operator review, not another charge.
+
+
+## Local hardening candidate
+
+Browser cookies now contain opaque references to revocable server-side sessions. GET /api/v1/auth/config selects demo or OIDC login. OIDC starts at GET /api/v1/auth/login and returns to the fixed /api/v1/auth/callback; the browser never receives provider tokens. The existing exact approval endpoint also creates a signed local AP2 envelope, and matching execution requests verify that envelope before acceptance. GET /api/v1/protocols describes the local profiles; scoped envelope/receipt retrieval is under /api/v1/protocols/ap2/envelopes/{id}. Receipts remain pending until both authoritative synthetic source outcomes are confirmed.
+
+MCP uses official SDK Streamable HTTP and bearer authorization, not browser-cookie authority. Its protected-resource metadata is /.well-known/oauth-protected-resource/mcp. GET /internal/metrics accepts only the separately configured scrape bearer credential; that credential grants no commerce or operator permissions.

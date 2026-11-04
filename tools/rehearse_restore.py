@@ -17,8 +17,6 @@ import psycopg
 from psycopg import sql
 from sqlalchemy.engine import make_url
 
-from commerce.config import get_settings
-
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -62,7 +60,9 @@ def main():
             continue
         connection.close()
         raise SystemExit("Stop the API and source with tools/stack.py down before rehearsal.")
-    settings = get_settings()
+    from database import admin_settings
+
+    settings = admin_settings()
     commerce = local_url(settings.database_url, "commerce")
     source = local_url(settings.simulator_database_url, "commerce_sources")
     suffix = uuid.uuid4().hex[:10]

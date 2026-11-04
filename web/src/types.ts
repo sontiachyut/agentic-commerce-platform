@@ -1,4 +1,4 @@
-export type Actor = { user_id: string; role: string };
+export type Actor = { user_id: string; display_name?: string; role: string };
 export type Product = {
   id: string;
   name: string;

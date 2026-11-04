@@ -94,6 +94,7 @@ def main():
                     "uvicorn",
                     module,
                     "--factory",
+                    "--no-access-log",
                     "--host",
                     "127.0.0.1",
                     "--port",

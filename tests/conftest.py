@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 import pytest
 from fastapi import HTTPException
+from sqlalchemy import text
 from sqlalchemy.engine import make_url
 
 from commerce.config import Settings
@@ -68,17 +69,30 @@ def system():
         trace_enabled=False,
     )
     engine, source_engine = make_engine(url), make_engine(source_url)
-    Base.metadata.drop_all(engine)
-    Base.metadata.create_all(engine)
-    SourceBase.metadata.drop_all(source_engine)
-    SourceBase.metadata.create_all(source_engine)
-    factory, source_factory = make_sessions(engine), make_sessions(source_engine)
-    seed(factory)
-    service, source = CommerceService(factory, settings), StatefulSource(source_factory)
-    worker = Worker(factory, settings, LocalSource(source))
-    yield System(
-        settings, engine, factory, service, source, source_factory, worker, Actor(user_id="alex")
-    )
+    # Separate pytest processes must not concurrently recreate the same test schemas.
+    with engine.connect().execution_options(isolation_level="AUTOCOMMIT") as test_lock:
+        test_lock.execute(text("SELECT pg_advisory_lock(91470399)"))
+        try:
+            Base.metadata.drop_all(engine)
+            Base.metadata.create_all(engine)
+            SourceBase.metadata.drop_all(source_engine)
+            SourceBase.metadata.create_all(source_engine)
+            factory, source_factory = make_sessions(engine), make_sessions(source_engine)
+            seed(factory)
+            service, source = CommerceService(factory, settings), StatefulSource(source_factory)
+            worker = Worker(factory, settings, LocalSource(source))
+            yield System(
+                settings,
+                engine,
+                factory,
+                service,
+                source,
+                source_factory,
+                worker,
+                Actor(user_id="alex"),
+            )
+        finally:
+            test_lock.execute(text("SELECT pg_advisory_unlock(91470399)"))
     engine.dispose()
     source_engine.dispose()
 

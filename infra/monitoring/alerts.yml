@@ -1,0 +1,25 @@
+groups:
+  - name: commerce-local
+    rules:
+      - alert: CommerceSourceUnresolved
+        expr: commerce_oldest_pending_execution_seconds > 120
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "A purchase remains unresolved"
+          description: "Inspect the original source command and pending holds; do not issue another payment."
+      - alert: CommerceQueueStalled
+        expr: commerce_oldest_ready_job_seconds > 30
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "The runnable queue is not advancing"
+      - alert: CommerceScrapeUnavailable
+        expr: up{job="commerce"} == 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Commerce metrics cannot be scraped"

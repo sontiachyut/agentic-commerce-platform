@@ -1,7 +1,8 @@
 from functools import lru_cache
+from ipaddress import ip_network
 from typing import Literal
 
-from pydantic import Field, SecretStr
+from pydantic import Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -15,7 +16,16 @@ class Settings(BaseSettings):
     simulator_url: str = "http://127.0.0.1:8511"
     signing_key: SecretStr = SecretStr("")
     source_token: SecretStr = SecretStr("")
+    metrics_token: SecretStr = SecretStr("")
     demo_mode: bool = True
+    schema_bootstrap: bool = True
+    auth_mode: Literal["demo", "oidc"] = "demo"
+    public_base_url: str = "http://127.0.0.1:8510"
+    oidc_issuer: str = "http://127.0.0.1:8850/realms/commerce"
+    oidc_client_id: str = "commerce-web"
+    oidc_client_secret: SecretStr = SecretStr("")
+    oidc_api_audience: str = "commerce-api"
+    session_ttl_seconds: int = Field(default=28800, ge=60, le=28800)
     model_provider: Literal["baseline", "codex"] = "baseline"
     codex_bin: str = "codex"
     codex_model: str | None = None
@@ -30,12 +40,25 @@ class Settings(BaseSettings):
     max_model_calls_per_session: int = Field(default=4, ge=2, le=10)
     cookie_secure: bool = False
     trace_enabled: bool = True
+    allowed_client_cidrs: list[str] = ["127.0.0.1/32", "::1/128"]
+
+    @field_validator("allowed_client_cidrs")
+    @classmethod
+    def local_networks(cls, values):
+        if not values or any(not ip_network(value).is_private for value in values):
+            raise ValueError("Only explicit private or loopback client networks are supported")
+        return values
+
     allowed_origins: list[str] = [
         "http://127.0.0.1:8510",
         "http://localhost:8510",
         "http://127.0.0.1:5173",
         "http://localhost:5173",
     ]
+
+    def require_source_secrets(self) -> None:
+        if len(self.source_token.get_secret_value()) < 32 or not self.demo_mode:
+            raise ValueError("A source credential and local synthetic mode are required")
 
     def require_secrets(self) -> None:
         if len(self.signing_key.get_secret_value()) < 32:
@@ -46,8 +69,10 @@ class Settings(BaseSettings):
             raise ValueError("COMMERCE_SOURCE_TOKEN must contain at least 32 characters")
         if not self.demo_mode:
             raise ValueError(
-                "This release supports local synthetic demonstrations only; production identity is not configured"
+                "This release supports local synthetic demonstrations only; public production operation is not enabled"
             )
+        if self.auth_mode == "oidc" and len(self.oidc_client_secret.get_secret_value()) < 32:
+            raise ValueError("Run tools/identity.py init to configure the local identity client")
 
 
 @lru_cache

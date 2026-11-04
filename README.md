@@ -2,7 +2,7 @@
 
 A purchasing workspace where an agent can find an item, prepare an exact quote and coordinate a purchase within the user's authority. Deterministic backend rules control money, inventory and execution; confirmed source states control what the user is told.
 
-**v0.1: working local demonstration, using synthetic products, payments and fulfillment.** It is a foundation for a client-specific implementation, with explicit production gates. See [verified status](docs/STATUS.md).
+**Local interoperability candidate: working synthetic commerce, signed authority, revocable identity and official MCP transport.** The current product is a general retail/virtual-kiosk demonstration. A pharmacy-specific workflow has not yet been implemented. It remains a foundation for a client-specific implementation, with explicit production gates. See [verified status](docs/STATUS.md).
 
 ## Try it locally
 
@@ -31,6 +31,8 @@ uv run python tools/stack.py down
 uv run python tools/stack.py up --provider baseline
 ```
 
+Optional [local OIDC, least-privilege roles and container packaging](docs/local-identity-and-packaging.md) have separate setup steps.
+
 The lifecycle tool preserves business data. It does not remove PostgreSQL volumes. [Setup, troubleshooting and recovery](docs/operations-runbook.md).
 
 ## What is implemented
@@ -42,7 +44,10 @@ The lifecycle tool preserves business data. It does not remove PostgreSQL volume
 - Atomic PostgreSQL stock/budget holds and a durable checkout job. Repeating a checkout resolves to its original execution.
 - An independent stateful source simulator with authorization, dispense, capture, cancellation, refund and inquiry. Response loss is different from confirmed failure.
 - Recovery workers, bounded retries, operator review, audit events, redacted OpenTelemetry traces and local HTTP metrics.
-- A React/TypeScript workspace for shopping, approvals, history, permissions and operations; a small authenticated read-only MCP subset.
+- A React/TypeScript workspace for shopping, approvals, history, permissions and operations; official MCP SDK Streamable HTTP with typed, authenticated read-only tools.
+- Optional local OIDC Code + PKCE, revocable server-side sessions and trusted tenant/role mapping.
+- A narrow signed AP2 direct/delegated profile, independently verified merchant terms and source-gated synthetic receipts.
+- Version-pinned outbound UCP/ACP contract adapters, offline official schemas and durable uncertain-command handling. The shopper graph still uses the internal virtual kiosk.
 
 ```mermaid
 flowchart LR
@@ -70,11 +75,11 @@ uv run python tools/stack.py up --provider baseline
 npm run test:e2e --prefix web
 ```
 
-Tests use dedicated PostgreSQL test databases and refuse other database names. Browser tests consume synthetic catalog inventory in the running demonstration; use a disposable local environment for repeated suites. The workflow in `.github/workflows/verify.yml` provisions a fresh CI database. See the [verification report](docs/verification-report.md) for measured results and what they do not establish.
+Tests use dedicated PostgreSQL test databases and refuse other database names. Use `uv run python tools/browser_check.py` for repeatable browser acceptance with disposable databases; it preserves the demonstration inventory/history. The workflow in `.github/workflows/verify.yml` provisions a fresh CI database. See the [verification report](docs/verification-report.md) for measured results and what they do not establish.
 
 ## Integration boundaries
 
-AP2, Visa TAP, UCP and ACP are **target integrations**. This release implements internal purchasing authority and checkout contracts; it does not claim those external wire protocols, network onboarding or conformance. MCP currently exposes only `search_products` and `get_purchase_status`. [Exact support matrix](docs/protocol-support.md).
+AP2 supports a declared local ES256 profile using pinned SDK primitives. RFC 9421 request recognition uses TAP-style tags without Visa enrollment. UCP/ACP outbound adapters are contract-tested against synthetic peers; they are not live merchant integrations or enabled shopper-graph routing. MCP exposes only `search_products` and `get_purchase_status` through the official SDK. [Exact support matrix](docs/protocol-support.md).
 
 The signed-in Codex runtime is for an owner-operated local application. A hosted customer service needs a supported inference arrangement, production identity, payment onboarding and the remaining release gates. A subscription is not a transferable hosted inference API. No real payment details are collected here.
 

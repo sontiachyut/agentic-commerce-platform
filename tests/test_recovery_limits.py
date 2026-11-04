@@ -162,3 +162,18 @@ def test_completed_execution_does_not_exhaust_active_session_admission(system, p
     assert system.service.create_session(
         system.actor, "Buy water under $3", "after-completed-purchase"
     )
+
+
+def test_worker_does_not_run_another_model_providers_agent_job(system):
+    from sqlalchemy import select
+
+    from commerce.models import Job, PurchaseSession
+
+    identifier = system.service.create_session(
+        system.actor, "Buy water under $3", "different-provider-job"
+    )
+    with system.factory.begin() as db:
+        db.get(PurchaseSession, identifier).model_provider = "codex"
+    assert system.worker.tick() is False
+    with system.factory() as db:
+        assert db.scalar(select(Job).where(Job.resource_id == identifier)).state == "READY"

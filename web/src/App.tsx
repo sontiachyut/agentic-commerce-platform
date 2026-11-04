@@ -17,6 +17,7 @@ import React, { useEffect, useState } from "react";
 export default function App() {
   const [actor, setActor] = useState<Actor | null>(null),
     [ready, setReady] = useState(false);
+  const [authMode, setAuthMode] = useState("loading");
   const [view, setView] = useState("shop"),
     [request, setRequest] = useState(""),
     [busy, setBusy] = useState(false),
@@ -45,6 +46,9 @@ export default function App() {
     setProvider(health.model_provider);
   }
   useEffect(() => {
+    api<{ mode: string }>("/api/v1/auth/config")
+      .then((data) => setAuthMode(data.mode))
+      .catch(() => setError("Unable to load sign-in. Please reload."));
     api<{ actor: Actor; csrf_token: string }>("/api/v1/auth/me")
       .then((data) => {
         setCsrf(data.csrf_token);
@@ -203,27 +207,39 @@ export default function App() {
             payment and delivery.
           </p>
           <div className="login-options">
-            <button onClick={() => login("alex")} disabled={busy}>
-              Enter Alex’s workspace <Icon name="arrow" />
-            </button>
-            <button
-              className="secondary"
-              onClick={() => login("sam")}
-              disabled={busy}
-            >
-              Enter Sam’s workspace
-            </button>
-            <button
-              className="text-button"
-              onClick={() => login("operator")}
-              disabled={busy}
-            >
-              Open operations console
-            </button>
+            {authMode === "oidc" ? (
+              <button
+                onClick={() => window.location.assign("/api/v1/auth/login")}
+              >
+                Sign in securely <Icon name="arrow" />
+              </button>
+            ) : authMode === "demo" ? (
+              <>
+                <button onClick={() => login("alex")} disabled={busy}>
+                  Enter Alex’s workspace <Icon name="arrow" />
+                </button>
+                <button
+                  className="secondary"
+                  onClick={() => login("sam")}
+                  disabled={busy}
+                >
+                  Enter Sam’s workspace
+                </button>
+                <button
+                  className="text-button"
+                  onClick={() => login("operator")}
+                  disabled={busy}
+                >
+                  Open operations console
+                </button>
+              </>
+            ) : (
+              <p role="status">Loading sign-in…</p>
+            )}
           </div>
           <p className="fine-print">
-            Synthetic shoppers, products and payments. These demonstration
-            identities are available only on this computer.
+            Synthetic products and payments. This workspace runs locally on this
+            computer.
           </p>
           {error && (
             <div role="alert" className="error">
@@ -305,12 +321,14 @@ export default function App() {
             </div>
           </div>
           <div className="user">
-            <span className="avatar">{actor.user_id[0].toUpperCase()}</span>
+            <span className="avatar">
+              {(actor.display_name || actor.user_id)[0].toUpperCase()}
+            </span>
             <div>
               <strong>
                 {actor.user_id === "operator"
                   ? "Operations"
-                  : `${actor.user_id[0].toUpperCase()}${actor.user_id.slice(1)}`}
+                  : `${(actor.display_name || actor.user_id)[0].toUpperCase()}${actor.user_id.slice(1)}`}
               </strong>
               <small>Local demonstration</small>
             </div>

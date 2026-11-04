@@ -21,6 +21,7 @@ def main():
             with open(path, "x", opener=lambda name, flags: os.open(name, flags, 0o600)) as f:
                 f.write("COMMERCE_SIGNING_KEY=" + secrets.token_urlsafe(48) + "\n")
                 f.write("COMMERCE_SOURCE_TOKEN=" + secrets.token_urlsafe(48) + "\n")
+                f.write("COMMERCE_METRICS_TOKEN=" + secrets.token_urlsafe(48) + "\n")
                 f.write("COMMERCE_MODEL_PROVIDER=baseline\n")
         print(
             "Local configuration ready. Secrets were not printed. Start PostgreSQL and run alembic upgrade head."
@@ -51,6 +52,7 @@ def main():
             "uvicorn",
             module,
             "--factory",
+            "--no-access-log",
             "--host",
             "127.0.0.1",
             "--port",

@@ -1,12 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-async function login(page: import("@playwright/test").Page) {
-  await page.goto("/");
-  await page.getByRole("button", { name: "Enter Alex’s workspace" }).click();
-  await expect(
-    page.getByRole("heading", { name: "What can we pick up for you?" }),
-  ).toBeVisible();
-}
+import { login } from "./support";
 
 test("exact approval, confirmed purchase, and persistent history", async ({
   page,

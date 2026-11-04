@@ -2,7 +2,7 @@
 
 The product target includes AP2 purchase authority, Visa TAP agent verification, UCP/ACP commerce boundaries and MCP tool access. These responsibilities remain separate. A signed agent request does not itself authorize spending; successful checkout acceptance does not prove a payment or delivery completed.
 
-## Current release
+## Historical v0.1 boundary (superseded by the candidate below)
 
 | Area | Implemented now | Remaining before an external compatibility claim |
 | --- | --- | --- |
@@ -25,3 +25,17 @@ The v0.1 application must not display AP2-compliant, TAP-certified, UCP-compatib
 AP2's closed checkout mandate uses a merchant-signed checkout and a hash bound to that signed object. A JSON hash of our local quote alone is not the AP2 SD-JWT protocol. UCP/ACP merchant integration similarly requires more than exposing an endpoint named checkout.
 
 Pinned research and exact upstream paths are in [reference analysis](reference-analysis.md). This implementation has not copied an upstream commerce engine or private payment reference. Public source research is evidence for design choices, not inherited production guarantees.
+
+
+## Current local interoperability candidate — 2026-11-04
+
+| Area | Tested local capability | Explicit boundary |
+| --- | --- | --- |
+| Identity | Revocable sessions; Keycloak Code + PKCE browser login, trusted JWT/tenant/role checks | Development-mode local IdP; not production IAM administration |
+| MCP | SDK 2.3.0 Streamable HTTP; modern/legacy clients; structured read-only tools and per-request bearer scope | No purchase/approval tools; native OIDC client-browser authorization remains to be exercised |
+| AP2 | Pinned SDK primitives, local ES256 direct or open-to-closed terminal chain, independent merchant JWT, encrypted artifacts, confirmed-source receipts | Explicit configured local keys and example root type; no external wallet or unrestricted intermediate delegation |
+| TAP-style recognition | RFC 9421 Ed25519, signed request fields/body, purpose/time and durable replay checks | No Visa enrollment, external fixtures or payment-container interoperability claim |
+| UCP | 2026-08-25 outbound five-operation contracts, official compiled schemas, JCS detached signature helpers and mandatory-AP2 checks | Synthetic contract peers; not advertised as externally conformant or routed by the shopper graph |
+| ACP | 2026-04-17 outbound five-operation contracts, exact full schema validation, encrypted command journal and non-truncated keys | Dated repository schema is the target; commercial enrollment and schema/OpenAPI example differences remain external concerns |
+
+The source manifest and licenses for bundled schema derivatives are under src/commerce/protocol_schemas. Schema validity is necessary but does not establish all semantic requirements or external interoperability. Merchant completed means order placed; it does not prove payment capture or fulfillment. The implementation and narrow exclusions are documented in ADR 009.

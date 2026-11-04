@@ -77,6 +77,14 @@ class ShoppingAgent:
             )
         if intent.clarification:
             return {"intent": intent.model_dump(), **self.stop(session.id, intent.clarification)}
+        if intent.currency != "USD" or intent.quantity != 1:
+            return {
+                "intent": intent.model_dump(),
+                **self.stop(
+                    session.id,
+                    "This workspace supports one item in USD. Please confirm a supported request.",
+                ),
+            }
         if intent.kiosk_id != "kiosk-a":
             return {
                 "intent": intent.model_dump(),
@@ -205,7 +213,22 @@ class ShoppingAgent:
                 grant_id=grant.id if grant else None,
                 grant_version=grant.version if grant else None,
             )
-        execution_id = self.service.accept(actor, request, "agent:" + session.id)
+        gateway = getattr(self, "protocol_gateway", None)
+        if gateway:
+            if not request.approval_id and not request.grant_id:
+                raise DomainError(
+                    "AUTHORITY_REQUIRED", "Trusted purchase approval is required.", 403
+                )
+            envelope = gateway.authorize(
+                actor,
+                request.quote_id,
+                quote_digest=state["quote"]["digest"] if request.approval_id else None,
+                grant_id=request.grant_id,
+                grant_version=request.grant_version,
+            )
+            execution_id = gateway.execute(actor, envelope["envelope_id"], "agent:" + session.id)
+        else:
+            execution_id = self.service.accept(actor, request, "agent:" + session.id)
         self.event(session.id, "tool.request_checkout_execution", execution_id=execution_id)
         return {"execution_id": execution_id}
 

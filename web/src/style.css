@@ -11,7 +11,7 @@
   font-weight: 400;
   font-size: 14px;
   --ink: #233c33;
-  --muted: #7a857f;
+  --muted: #59685f;
   --line: #e3e7e1;
   --accent: #c8dd9c;
   --green: #274c3b;
@@ -123,7 +123,7 @@ h3 {
   font-size: 10px;
   font-weight: 650;
   letter-spacing: 1.6px;
-  color: #6a7a6f;
+  color: #526349;
   margin-bottom: 13px;
 }
 .fine-print {
@@ -199,7 +199,7 @@ h3 {
 .workspace-label {
   font-size: 9px;
   letter-spacing: 1.7px;
-  color: #9aa49d;
+  color: #526349;
   font-weight: 600;
   margin: 46px 10px 12px;
 }
@@ -231,7 +231,7 @@ h3 {
 .workspace small,
 .user small {
   display: block;
-  color: #8a948e;
+  color: #526349;
   font-size: 10px;
   margin-top: 4px;
 }
@@ -255,7 +255,7 @@ h3 {
 }
 .sidebar nav button {
   justify-content: flex-start;
-  color: #77837b;
+  color: #526349;
   background: transparent;
   padding: 12px 11px;
   gap: 11px;
@@ -280,7 +280,7 @@ h3 {
   display: flex;
   gap: 9px;
   padding: 17px 6px 24px;
-  color: #8a997e;
+  color: #526349;
 }
 .security-note > svg {
   flex-shrink: 0;
@@ -288,14 +288,14 @@ h3 {
 }
 .security-note strong {
   font-size: 10px;
-  color: #7d8d73;
+  color: #526349;
   font-weight: 600;
 }
 .security-note small {
   display: block;
   font-size: 10px;
   line-height: 1.6;
-  color: #a0aaa0;
+  color: #526349;
   margin-top: 6px;
 }
 .user {
@@ -319,7 +319,7 @@ h3 {
   margin-left: auto;
   padding: 6px;
   background: transparent;
-  color: #919c94;
+  color: #526349;
 }
 .icon-button:hover {
   background: #f1f4ed;
@@ -338,7 +338,7 @@ h3 {
   padding: 0 40px;
   background: #fff;
   border-bottom: 1px solid var(--line);
-  color: #758278;
+  color: #526349;
   font-size: 11px;
 }
 .slash {
@@ -364,7 +364,7 @@ h3 {
   font-size: 8px;
   font-weight: 650;
   letter-spacing: 1px;
-  color: #6c7b5e;
+  color: #526349;
 }
 .content {
   max-width: 1390px;
@@ -414,7 +414,7 @@ h3 {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #698254;
+  color: #526349;
   font-size: 12px;
 }
 .composer-label strong {
@@ -424,7 +424,7 @@ h3 {
 .composer-label > span {
   margin-left: auto;
   font-size: 10px;
-  color: #9ba392;
+  color: #526349;
 }
 .composer textarea {
   width: 100%;
@@ -440,7 +440,7 @@ h3 {
   background: transparent;
 }
 .composer textarea::placeholder {
-  color: #a4aca1;
+  color: #526349;
   font-weight: 350;
 }
 .composer textarea:focus {
@@ -463,11 +463,11 @@ h3 {
   display: flex;
   gap: 5px;
   align-items: center;
-  color: #8e9986;
+  color: #526349;
   min-width: 0;
 }
 .permission-select select {
-  color: #7a8874;
+  color: #526349;
   border: 0;
   background: transparent;
   font-size: 10px;
@@ -486,7 +486,7 @@ h3 {
   font-size: 8px;
   letter-spacing: 1px;
   font-weight: 600;
-  color: #98a190;
+  color: #526349;
   margin-right: 3px;
 }
 .suggestions button {
@@ -495,7 +495,7 @@ h3 {
   border-radius: 5px;
   border: 1px solid var(--line);
   background: #f8f9f5;
-  color: #7c8775;
+  color: #526349;
   font-weight: 450;
 }
 .suggestions button:hover {
@@ -503,7 +503,7 @@ h3 {
 }
 .suggestions button > span {
   margin-left: 5px;
-  color: #98a98a;
+  color: #526349;
 }
 .section-heading {
   display: flex;
@@ -516,11 +516,11 @@ h3 {
   margin-left: auto;
 }
 .section-heading > small {
-  color: #939d92;
+  color: #526349;
 }
 .section-heading small {
   font-size: 10px;
-  color: #9aa294;
+  color: #526349;
 }
 .purchase-card {
   padding: 22px;
@@ -532,7 +532,7 @@ h3 {
   display: grid;
   place-items: center;
   background: #eef3e5;
-  color: #78925e;
+  color: #526349;
   border-radius: 9px;
 }
 .purchase-card .section-heading h2 {
@@ -545,7 +545,7 @@ h3 {
 }
 .user-request {
   font-size: 12px;
-  color: #778373;
+  color: #526349;
   padding: 11px 12px;
   background: #f7f9f3;
   border-left: 2px solid #ccd7bb;
@@ -573,7 +573,7 @@ h3 {
   align-items: center;
   gap: 8px;
   width: 20%;
-  color: #a9b0a5;
+  color: #526349;
 }
 .step:not(:last-child)::after {
   content: "";
@@ -599,7 +599,7 @@ h3 {
   font-size: 9px;
 }
 .step.done {
-  color: #6e8654;
+  color: #526349;
 }
 .step.done > span {
   background: #edf3e4;
@@ -611,7 +611,7 @@ h3 {
   font-size: 9px;
   letter-spacing: 0.1px;
   line-height: 1.5;
-  color: #7e866d;
+  color: #526349;
   background: #f0f2e9;
   border: 1px solid #e4e8d9;
   border-radius: 5px;
@@ -631,7 +631,7 @@ h3 {
 }
 .working {
   font-size: 11px;
-  color: #8a967d;
+  color: #526349;
   display: flex;
   gap: 8px;
   align-items: center;
@@ -659,7 +659,7 @@ h3 {
 .outcome-grid > div > small {
   display: block;
   font-size: 8px;
-  color: #98a18e;
+  color: #526349;
   letter-spacing: 0.9px;
   margin-bottom: 8px;
 }
@@ -670,13 +670,13 @@ h3 {
 }
 .trace summary {
   font-size: 10px;
-  color: #85917b;
+  color: #526349;
   cursor: pointer;
 }
 .trace summary > span {
   float: right;
   font-size: 9px;
-  color: #a0aa95;
+  color: #526349;
 }
 .trace ol {
   list-style: none;
@@ -700,16 +700,16 @@ h3 {
 }
 .trace li strong {
   font-weight: 500;
-  color: #6b7b60;
+  color: #526349;
 }
 .trace li small {
   margin-left: 8px;
-  color: #a4ac9b;
+  color: #526349;
   font-size: 9px;
 }
 .trace code {
   display: block;
-  color: #939f8a;
+  color: #526349;
   overflow-wrap: anywhere;
   line-height: 1.5;
   font-size: 9px;
@@ -752,7 +752,7 @@ h3 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: #84936b;
+  color: #526349;
   gap: 7px;
   margin-bottom: 13px;
 }
@@ -796,7 +796,7 @@ h3 {
 }
 .product-card small {
   font-size: 8px;
-  color: #9aa18f;
+  color: #526349;
 }
 .review-column {
   display: flex;
@@ -812,7 +812,7 @@ h3 {
   padding-bottom: 18px;
   margin-bottom: 18px;
   justify-content: space-between;
-  color: #829274;
+  color: #526349;
 }
 .review-card h2 {
   font-size: 13px;
@@ -830,7 +830,7 @@ h3 {
   display: grid;
   place-items: center;
   margin: 0 auto 20px;
-  color: #a4b48c;
+  color: #526349;
   background: #f8faf4;
 }
 .review-empty h3 {
@@ -840,7 +840,7 @@ h3 {
 .review-empty p {
   font-size: 11px;
   line-height: 1.8;
-  color: #96a08b;
+  color: #526349;
   max-width: 220px;
   margin: 0 auto;
 }
@@ -854,7 +854,7 @@ h3 {
   margin: 0 -20px;
   padding: 13px;
   font-size: 9px;
-  color: #99a38e;
+  color: #526349;
 }
 .review-footer .live-dot {
   width: 4px;
@@ -884,7 +884,7 @@ h3 {
 .review-product small {
   display: block;
   font-size: 10px;
-  color: #9aa18e;
+  color: #526349;
   margin-top: 6px;
 }
 .receipt {
@@ -896,10 +896,10 @@ h3 {
   justify-content: space-between;
   margin-bottom: 13px;
   font-size: 11px;
-  color: #9aa28f;
+  color: #526349;
 }
 .receipt strong {
-  color: #65765b;
+  color: #526349;
   font-weight: 500;
 }
 .receipt .total {
@@ -916,7 +916,7 @@ h3 {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  color: #94a37e;
+  color: #526349;
   padding: 12px 10px;
   background: #f6f9ef;
   border: 1px solid #e7eddb;
@@ -931,7 +931,7 @@ h3 {
   font-size: 10px;
   line-height: 1.7;
   margin: 0;
-  color: #829171;
+  color: #526349;
 }
 .approve-button {
   width: 100%;
@@ -945,7 +945,7 @@ h3 {
   gap: 9px;
   font-size: 11px;
   text-align: center;
-  color: #8b927e;
+  color: #526349;
   background: #f6f8f0;
   padding: 18px 10px;
   border-radius: 8px;
@@ -969,7 +969,7 @@ h3 {
 .note-card .eyebrow {
   font-size: 8px;
   letter-spacing: 1.2px;
-  color: #82966b;
+  color: #526349;
   margin-bottom: 13px;
 }
 .note-card h3 {
@@ -981,7 +981,7 @@ h3 {
 }
 .note-card > p:last-child {
   font-size: 11px;
-  color: #8a9b78;
+  color: #526349;
   line-height: 1.9;
   margin: 0;
 }
@@ -995,7 +995,7 @@ h3 {
   align-items: center;
   gap: 8px;
   font-size: 10px;
-  color: #93a086;
+  color: #526349;
   cursor: pointer;
   list-style: none;
 }
@@ -1004,14 +1004,14 @@ h3 {
 }
 .lab label {
   display: block;
-  color: #98a18e;
+  color: #526349;
   font-size: 9px;
   margin-bottom: 7px;
 }
 .lab select {
   width: 100%;
   font-size: 10px;
-  color: #76836a;
+  color: #526349;
   padding: 8px;
   background: #fff;
   border: 1px solid var(--line);
@@ -1025,11 +1025,11 @@ h3 {
   padding: 22px 0 24px;
   margin-top: 30px;
   font-size: 9px;
-  color: #a1aa99;
+  color: #526349;
 }
 .page-footer > span:first-child {
   font-weight: 600;
-  color: #8b9781;
+  color: #526349;
 }
 .error {
   display: flex;
@@ -1076,7 +1076,7 @@ h3 {
   background: #eff4e7;
   display: grid;
   place-items: center;
-  color: #8da273;
+  color: #526349;
   flex-shrink: 0;
 }
 .history-text {
@@ -1090,12 +1090,12 @@ h3 {
 .history-text small {
   display: block;
   font-size: 10px;
-  color: #9aa58f;
+  color: #526349;
   margin-top: 7px;
 }
 .empty-state {
   padding: 45px 25px;
-  color: #9aa58f;
+  color: #526349;
   font-size: 12px;
   text-align: center;
 }
@@ -1118,7 +1118,7 @@ h3 {
   display: block;
   font-size: 11px;
   margin-top: 20px;
-  color: #839074;
+  color: #526349;
 }
 .permission-form input {
   display: block;
@@ -1154,7 +1154,7 @@ h3 {
 .grant-amount small {
   font-size: 12px;
   letter-spacing: 0;
-  color: #9ba58e;
+  color: #526349;
   margin-left: 10px;
   font-weight: 400;
 }
@@ -1189,7 +1189,7 @@ h3 {
 .stat small {
   font-size: 9px;
   letter-spacing: 1px;
-  color: #97a18a;
+  color: #526349;
   display: block;
 }
 .stat strong {
@@ -1219,7 +1219,7 @@ table {
 th {
   font-size: 9px;
   letter-spacing: 0.5px;
-  color: #93a083;
+  color: #526349;
   text-transform: uppercase;
   font-weight: 500;
   background: #f8faf3;
@@ -1228,7 +1228,7 @@ th {
 td {
   font-size: 11px;
   padding: 16px 18px;
-  color: #7e8d70;
+  color: #526349;
   border-top: 1px solid #edf1e5;
 }
 td code {
@@ -1304,7 +1304,7 @@ td code {
   font-size: 9px;
   letter-spacing: 2px;
   margin-top: 80px;
-  color: #8fa27f;
+  color: #d8e8ce;
 }
 .orbit {
   position: absolute;
@@ -1657,3 +1657,6 @@ td code {
     transition: none !important;
   }
 }
+
+/* Product illustrations retain their palette; readable labels use a shared ink. */
+.product-art > span { color: #405046; }

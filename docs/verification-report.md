@@ -1,4 +1,9 @@
-# Verification report — v0.1
+# Verification report — historical v0.1 and local hardening
+
+The original v0.1 record below is preserved. Current candidate evidence: 87 backend tests passed in 17.36 seconds; six browser tests passed (including real local OIDC and four-screen automated accessibility checks); the non-root packaged HTTP smoke completed in 2.597 seconds with synthetic response-loss recovery and duplicate execution resolving to one ID. The updated migration chain also passed fresh upgrade, downgrade-to-base, upgrade and metadata checks, and both commerce/source restores matched their table fingerprints. Identity-provider/configuration recovery remains a separate exercise. These timings are individual local observations, not latency percentiles or capacity claims. The older Docker ARM guest required the documented portable OpenSSL CPU profile. See [current status](STATUS.md) and [identity/packaging](local-identity-and-packaging.md).
+
+Decision results are retained under results/evaluations: rule baseline 100/100; original Codex batch 1/3; corrected three-case regression 3/3. The original failures were not removed. No 100-case real-model accuracy, external merchant certification, deployed monitoring or production throughput is established.
+
 
 Recorded 2026-11-04 on macOS. This report covers the standalone local implementation, not a deployed customer service. All purchases, products and provider effects are synthetic.
 

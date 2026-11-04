@@ -169,9 +169,10 @@ def create_source_app(settings: Settings | None = None):
 
     @asynccontextmanager
     async def lifespan(app):
-        settings.require_secrets()
+        settings.require_source_secrets()
         # Simulator schema is not commerce schema and is initialized independently.
-        SourceBase.metadata.create_all(engine)
+        if settings.schema_bootstrap:
+            SourceBase.metadata.create_all(engine)
         yield
         engine.dispose()
 

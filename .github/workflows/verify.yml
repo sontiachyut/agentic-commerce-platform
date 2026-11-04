@@ -48,13 +48,8 @@ jobs:
       - run: npm audit --prefix web
       - run: npm run build --prefix web
       - run: npm exec --prefix web -- playwright install --with-deps chromium
-      - name: Start local synthetic services
-        run: uv run python tools/stack.py up --provider baseline
-      - name: Browser acceptance tests
-        run: npm run test:e2e --prefix web
-      - name: Stop application services
-        if: always()
-        run: uv run python tools/stack.py down
+      - name: Isolated browser acceptance
+        run: uv run python tools/browser_check.py
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
