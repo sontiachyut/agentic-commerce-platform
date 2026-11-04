@@ -1,16 +1,117 @@
-# Asterfield Pharmacy — Family Pickup
+# Agentic Commerce
 
-An original pharmacy pickup product built on Agentic Commerce. One household request becomes an authorized basket, a pharmacy staff task, and a confirmed handover. Voice and text use the same persistent workflow.
+### One request. A whole family’s pickup, handled.
+
+[![Verify](https://github.com/sontiachyut/agentic-commerce-platform/actions/workflows/verify.yml/badge.svg?branch=main)](https://github.com/sontiachyut/agentic-commerce-platform/actions/workflows/verify.yml)
+
+**Asterfield Family Pickup** is the first working product built on this platform: a voice-enabled pharmacy assistant that turns a household request into an authorized order, a pharmacy staff task and a confirmed pickup.
 
 > “Order the regular medicines for Dad, Mom, my sister and me from the nearest pharmacy to home. You can pay up to fifty dollars.”
 
-The local demonstration retrieves four **synthetic saved routines**, selects the nearest location able to fill the complete basket, and places a $40.98 order within a separate recorded permission. Staff review and prepare it before payment capture. A customer pickup code confirms the eventual handover. An order being accepted, being ready, and being collected are different states.
+The agent understands the request. The backend checks the saved items, family access, stock, location and spending permission. Pharmacy staff prepare the order, and the customer receives a verified pickup confirmation.
 
-**Working local synthetic candidate.** Asterfield is fictional. Existing refill eligibility, copays, inventory, payment and fulfillment are simulated; no real patient data or funds are used. The application does not prescribe, give clinical advice, substitute treatments, connect to CVS/Walmart, or claim native CarPlay approval. [Current verified status](docs/STATUS.md).
+## ▶ Watch the complete demo
 
-## Run locally
+**3 minutes 57 seconds · narrated · real running customer and pharmacy screens.**
 
-Python 3.12, uv, Node 22+, Docker with Compose. AI mode uses the owner's already signed-in Codex CLI under its normal allowance; the deterministic baseline needs no LLM. This is an owner-operated local integration, not a transferable hosted inference API.
+[![Watch the complete Family Pickup demo](docs/demo/customer-order.png)](https://raw.githubusercontent.com/sontiachyut/agentic-commerce-platform/main/docs/demo/family-pickup-demo.mp4)
+
+[**Watch / download the full video**](https://raw.githubusercontent.com/sontiachyut/agentic-commerce-platform/main/docs/demo/family-pickup-demo.mp4) · [Captions](docs/demo/family-pickup-demo.srt) · [Demo walkthrough](docs/pharmacy/demo-guide.md)
+
+| Jump to | What you’ll see |
+| --- | --- |
+| **00:17** | Four family members and their saved routines |
+| **00:35** | Explicit spending permission before the errand |
+| **00:52** | A $35 request stops because the complete basket costs $40.98 |
+| **01:09** | A spoken $50 request moves through recognition and the agent workflow |
+| **02:12** | The complete basket is accepted at the nearest eligible pharmacy |
+| **02:33** | Staff review and prepare the order before payment capture |
+| **02:49** | The customer receives ready status, location and a pickup code |
+| **03:18** | Staff verify collection; the customer sees a completed pickup |
+
+*Asterfield is fictional. All people, prescription records, prices, locations, payments and handovers are synthetic. The recorded customer command and narration use supplied neural voices; recognition, AI interpretation, backend processing and staff actions run through the actual application.*
+
+## What works today
+
+**A complete local product, from the first request to the final handover.**
+
+| For the customer | For the pharmacy team |
+| --- | --- |
+| Speak or type a family pickup request | Work from a facility-scoped order queue |
+| Retrieve approved family members’ saved items | Review eligibility and prepare the complete basket |
+| Set per-order, total, count and expiry limits | Confirm readiness before payment capture |
+| Find the nearest open location with every item | Verify the customer’s pickup code before handover |
+| Hear natural spoken updates and view pickup history | Follow recorded payment and fulfillment status |
+
+The standard demo orders **four saved packages for $40.98** at Cedar Square. A closer location is skipped because it cannot fill the complete basket. The system preserves a lower budget in the request even when a larger standing permission exists.
+
+<details>
+<summary><strong>See the customer and staff workspaces</strong></summary>
+
+**Customer — an accepted family order, its exact basket and spending allowance**
+
+![Customer order and spending permission](docs/demo/customer-order.png)
+
+**Pharmacy — the same basket, confirmed payment and pickup verification**
+
+![Pharmacy preparation and pickup desk](docs/demo/pharmacy-desk.png)
+
+</details>
+
+## Built to finish the task
+
+A convincing answer is only one step. The system also has to keep the purchase correct when requests repeat, stock changes or a payment response disappears.
+
+- **Authority stays explicit.** Caregiver access and spending permission are separate; the model cannot create either.
+- **The whole basket matters.** No dropped family member, invented copay or automatic medication substitution to make a budget fit.
+- **One quote leads to one order.** Inventory, refill and budget holds commit atomically; duplicate acceptance returns the original order.
+- **Uncertainty stays visible.** A timeout triggers source inquiry with the same command identity. It does not become a second payment.
+- **Completion means something.** Accepted, prepared, paid, ready and collected remain distinct facts.
+
+**Verified on November 4, 2026:** 99 backend tests, 10 local browser tests, actual local speech recognition/neural playback, and a two-database restore rehearsal with matching data fingerprints. [Verification report](docs/verification-report.md) · [Measured demo evidence](results/pharmacy/2026-11-04-local.json)
+
+## Coming soon
+
+The next step is making this working slice easier to adapt to a pharmacy’s own workflow.
+
+| Next up — planned | What it unlocks |
+| --- | --- |
+| Configurable pharmacies, households and saved routines | Demonstrate a client’s workflow without changing the core engine |
+| Faster, streaming voice with interruption handling | A more fluid conversation while the workflow runs |
+| Refill and coverage blocker coordination | Follow a blocked request through an authorized resolution process |
+| Customer notifications | Receive a ready-for-pickup update beyond the open browser |
+| Pharmacy and payment adapters | Replace synthetic providers through approved client integrations |
+
+These are roadmap items, not features in the current demo. Integration work depends on the client’s systems, permissions and provider contracts; no release dates are promised.
+
+## The bigger vision
+
+**Finish the errand before you reach the counter.**
+
+Imagine leaving work, asking for the family’s regular items, and letting an assistant coordinate the pickup within the people, locations and budget you have already approved. Your phone, home assistant or future in-car interface becomes another way to reach the same reliable workflow.
+
+Family Pickup is the first standalone product in that direction. The platform separates household access, saved routines, location selection, purchasing authority, payment, fulfillment and notifications so each capability can grow independently and connect to the next.
+
+Native CarPlay, live pharmacy/payer connections and real-money payments are later milestones. The browser voice experience shown here is the working foundation for that vision.
+
+## Under the hood
+
+| Layer | Current implementation |
+| --- | --- |
+| Customer and staff apps | React + TypeScript |
+| API and validation | Python, FastAPI, Pydantic |
+| Agent workflow | LangGraph + structured interpretation through the owner’s signed-in Codex CLI |
+| Business state and recovery | PostgreSQL, SQLAlchemy, Alembic, durable workers and source inquiry |
+| Voice | Local whisper.cpp recognition + Qwen3-TTS/MLX natural speech on Apple Silicon |
+| Identity and tools | Revocable sessions/CSRF, optional local OIDC, read-only MCP |
+| Verification and packaging | pytest, Playwright, automated accessibility checks, Docker, GitHub Actions |
+
+Speech runs locally. Codex model inference uses the owner’s signed-in service and requires connectivity. A hosted client product needs a supported inference arrangement; the subscription integration is an owner-operated local profile.
+
+<details>
+<summary><strong>Run it locally</strong></summary>
+
+Prerequisites: Python 3.12, uv, Node 22+ and Docker/Compose. AI mode additionally needs an eligible signed-in Codex CLI; a deterministic baseline runs without an LLM.
 
 ```bash
 uv sync --locked
@@ -22,54 +123,30 @@ npm run build --prefix web
 uv run python tools/stack.py up --provider codex
 ```
 
-Open **http://127.0.0.1:8510**. In demo-auth mode choose **Explore family pickup**, configure pickup permission, then type the request above. Choose **Open the pharmacy desk** after signing out to prepare and hand over the same order. Optional local OIDC is described in [identity and packaging](docs/local-identity-and-packaging.md). For an existing least-privilege installation, use `uv run python tools/database.py migrate` rather than running migrations with the runtime account.
+Open **http://127.0.0.1:8510**. In demo-auth mode, choose **Explore family pickup**, configure permission and submit a request. Sign out and choose **Open the pharmacy desk** to prepare and hand over the same order.
 
-For local voice input, install CMake and a C++ compiler, then provision the pinned executable and checksum-verified English model:
+For existing least-privilege installations, use `uv run python tools/database.py migrate` instead of migrating with the runtime account. [OIDC and packaging](docs/local-identity-and-packaging.md).
+
+For local voice, install CMake/a C++ compiler, then:
 
 ```bash
 uv run python tools/install_voice.py
-uv run python tools/install_neural_voice.py  # optional Apple Silicon natural voice (~2 GB weights)
+uv run python tools/install_neural_voice.py  # optional Apple Silicon profile; ~2 GB weights
 ```
 
-Restart the API if necessary. The microphone records at most 45 seconds; speech recognition runs locally through whisper.cpp. A keyboard fallback remains available. Qwen3-TTS with a supplied Ryan preset reads backend-confirmed status locally without listing relatives' medication names. Its optional Apple Silicon environment is separate from the API; spoken output falls back to written status if unavailable. Recognition quality on one synthetic command does not establish medical vocabulary accuracy or broad accent/device coverage.
-
-Use `--provider baseline` for deterministic development. Stop before switching providers:
+Restart the API after provisioning. The microphone is bounded to 45 seconds. Text remains available when recognition or speech cannot run. To switch to the rule baseline:
 
 ```bash
 uv run python tools/stack.py down
 uv run python tools/stack.py up --provider baseline
 ```
 
-The lifecycle commands preserve PostgreSQL volumes and business history. [Operations and recovery](docs/operations-runbook.md).
+[Setup and recovery](docs/operations-runbook.md) · [Repeat the recorded demonstration](docs/pharmacy/demo-guide.md)
 
-## What the product does
+</details>
 
-- Separates approved per-person caregiver access from authority to purchase saved items.
-- Uses fixed existing refill/OTC packages and confirmed synthetic prices; blocks too-soon refills, exhausted refills, unresolved coverage and changed access.
-- Chooses the nearest open location able to supply the whole basket; uses labeled straight-line distance, not traffic navigation.
-- Preserves strict “under” versus inclusive “up to” limits. A higher standing permission never overrides a lower request budget.
-- Validates immutable quote terms, reserves stock/refills/budget atomically, and binds duplicate acceptance to one order.
-- Keeps payment authorization, staff preparation, capture, readiness and verified handover separate.
-- Recovers uncertain provider outcomes through stable commands and source inquiry; a lost response is not treated as a decline.
-- Provides customer history, a facility-scoped staff queue, audit records, server-side sessions, CSRF controls and read-only MCP tools.
-- Interprets requests with a bounded LangGraph/local Codex workflow. The model cannot pick a new treatment, create spending permission or declare a transaction successful.
-
-```mermaid
-flowchart LR
-    Customer[Customer · voice or text] --> API[Identity and pharmacy API]
-    API --> Speech[Local speech recognition]
-    API --> Graph[LangGraph · request interpretation]
-    Graph --> Policy[Saved routines · eligibility · location · authority]
-    Policy --> DB[(Quotes · permissions · orders · jobs)]
-    DB --> Worker[Durable payment and handover worker]
-    Worker --> Source[Synthetic source · separate database]
-    Staff[Pharmacy staff] --> API
-    DB --> History[Customer status and pickup history]
-```
-
-## Demonstrate and verify
-
-A complete client video is a release deliverable, not a substitute for a working product. The [demo guide](docs/pharmacy/demo-guide.md) describes the customer and staff journey, reproducible capture, evidence and integration boundaries.
+<details>
+<summary><strong>Run the engineering checks</strong></summary>
 
 ```bash
 uv run ruff check src tests tools migrations
@@ -78,28 +155,25 @@ uv run pytest -q
 npm run build --prefix web
 npm exec --prefix web -- playwright install chromium
 uv run python tools/browser_check.py --product pharmacy
-uv run python tools/browser_check.py  # preserved retail engine regression
+uv run python tools/browser_check.py  # preserved retail regression
 ```
 
-Browser helpers use disposable databases and preserve the main demonstration's inventory/history. Voice acceptance additionally requires the provisioned recognizer and the synthetic audio fixture described in the demo guide. CI runs both products without requiring an inference subscription.
+Browser helpers use disposable databases and preserve the main inventory/history. Voice acceptance additionally needs the provisioned local runtimes and synthetic audio fixture. CI runs both products without an inference subscription; local voice checks are separately exercised on the provisioned Mac.
 
-## Preserved engine and protocols
+</details>
 
-The pre-pharmacy retail engine remains at checkpoint `checkpoint/retail-engine-before-pharmacy-2026-11-04` (`4e077c9`) and can run with `COMMERCE_PRODUCT_MODE=retail`. Its signed AP2 profile, RFC 9421/TAP-style recognition and UCP/ACP synthetic contract adapters are preserved engineering capabilities. **The pharmacy batch workflow does not yet route through those external protocol adapters.** Its internal quotes and permissions are not relabeled AP2 mandates. Pharmacy MCP exposes `get_family_regulars` and `get_family_pickup_status`; neither approves or pays.
+## Engineering library
 
-[Exact protocol support](docs/protocol-support.md). The Java payment project is a complementary future integration, not a runtime dependency.
-
-## Read next
-
-| Document | Purpose |
+| Read next | Purpose |
 | --- | --- |
-| [Verified status](docs/STATUS.md) | Current capabilities, measurements and remaining gates |
-| [Pharmacy brief](docs/pharmacy/product-brief.md) | User problem, standalone product and larger vision |
-| [Pharmacy architecture](docs/pharmacy/architecture.md) | State ownership, trust boundaries and failure handling |
-| [Pharmacy API and demo](docs/pharmacy/demo-guide.md) | Run the complete customer/staff journey |
-| [Research](docs/pharmacy/research.md) | Primary workflow references and original design decisions |
-| [Verification](docs/verification-report.md) | Current evidence and preserved historical results |
-| [Operations](docs/operations-runbook.md) / [Security](SECURITY.md) | Local setup, recovery and release boundaries |
-| [Engineering guide](docs/engineering-guide.md) | Preserved engine concepts and tradeoffs |
+| [Current status](docs/STATUS.md) | Implemented, verified and outstanding work |
+| [Product brief](docs/pharmacy/product-brief.md) | User problem, standalone scope and larger vision |
+| [Pharmacy architecture](docs/pharmacy/architecture.md) | Domain boundaries, state ownership and failure handling |
+| [API reference](docs/api-reference.md) | Authentication, contracts and retry semantics |
+| [Research](docs/pharmacy/research.md) | Primary workflow references and voice-runtime decisions |
+| [Operations](docs/operations-runbook.md) / [Security](SECURITY.md) | Local operation, recovery and release boundaries |
+| [Protocol support](docs/protocol-support.md) | Exact AP2/TAP-style/UCP/ACP/MCP implementation boundaries |
 
-Commercial hosting, supported hosted inference, real pharmacy/payer/payment integration, approved native CarPlay, distribution licensing and production operational review remain separate gates. A narrated synthetic demo is not evidence of those capabilities.
+The earlier retail engine and its signed interoperability work remain preserved at `checkpoint/retail-engine-before-pharmacy-2026-11-04`. Pharmacy batch orders currently use internal quotes and permissions; the external commerce adapters are not yet their execution path. The Java payment project remains complementary, not a runtime dependency.
+
+**Current release:** a working local synthetic demonstration. Live clinical/insurance/payment processing, public hosting, production operational review, commercial licensing and native CarPlay approval remain separate release gates.

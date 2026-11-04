@@ -1,0 +1,28 @@
+{
+  "recorded_on": "2026-11-04",
+  "title": "Asterfield Pharmacy \u2014 Family Pickup",
+  "duration_seconds": 236.569,
+  "synthetic_records_and_payments": true,
+  "prerecorded_neural_customer_command": true,
+  "neural_narration": true,
+  "actual_app_speech": true,
+  "real_codex_interpretation": true,
+  "files": {
+    "family-pickup-demo.mp4": {
+      "bytes": 6616715,
+      "sha256": "7679b52f22e4956ee4fa927a832327862edddf8a44243fa644f064e789a3cd66"
+    },
+    "pharmacy-desk.png": {
+      "bytes": 82961,
+      "sha256": "d684747aea4b862df0852a3c7f6282c2407a85f5f3bf95a739e59e88bfe06104"
+    },
+    "customer-order.png": {
+      "bytes": 148359,
+      "sha256": "d5e55a51aff72ce2760cea0132042aa84cd8121eb7069e3821bc9e94c231e3fe"
+    },
+    "family-pickup-demo.srt": {
+      "bytes": 3818,
+      "sha256": "fa61130682e44b32221c768065dfe010c75385f5531d5734dfed414de943543e"
+    }
+  }
+}

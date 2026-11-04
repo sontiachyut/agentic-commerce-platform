@@ -1,0 +1,143 @@
+1
+00:00:00,000 --> 00:00:05,227
+Asterfield Family Pickup turns a household request into one confirmed pharmacy pickup.
+
+2
+00:00:05,227 --> 00:00:10,454
+This is the working local product, using fictional people and pharmacy records,
+
+3
+00:00:10,454 --> 00:00:15,680
+simulated payments, and a real local AI interpreter.
+
+4
+00:00:16,684 --> 00:00:22,444
+The family organizer already has approved access to four saved routines. Prescription
+
+5
+00:00:22,444 --> 00:00:28,204
+items use existing refill records and confirmed demonstration prices. The agent does
+
+6
+00:00:28,204 --> 00:00:33,964
+not select treatments or change prescriptions.
+
+7
+00:00:34,970 --> 00:00:40,250
+Before ordering, Alex explicitly allows these saved items, up to fifty dollars
+
+8
+00:00:40,250 --> 00:00:45,530
+per order. That permission has a separate total allowance, order limit and
+
+9
+00:00:45,530 --> 00:00:50,810
+expiry. A spoken request cannot grant itself extra authority.
+
+10
+00:00:51,811 --> 00:00:55,811
+First, a request with a thirty five dollar limit. The full family
+
+11
+00:00:55,811 --> 00:00:59,811
+basket costs forty dollars and ninety eight cents. The system stops. It
+
+12
+00:00:59,811 --> 00:01:03,811
+does not remove somebody's item or use the larger standing allowance to
+
+13
+00:01:03,811 --> 00:01:07,811
+ignore the request.
+
+14
+00:01:08,814 --> 00:01:13,267
+Now Alex speaks the request. This recorded voice goes through the browser
+
+15
+00:01:13,267 --> 00:01:17,720
+microphone pipeline and the real local speech recognizer, then into the AI
+
+16
+00:01:17,720 --> 00:01:22,174
+workflow.
+
+17
+00:01:22,598 --> 00:01:30,598
+Alex: Order the regular medicines for my dad, mom, sister and myself from the nearest pharmacy to home. You can pay up to $50.
+
+18
+00:01:55,768 --> 00:02:10,888
+Assistant: Your family order is accepted at Asterfield Cedar Square, 208 Cedar Avenue, Asterfield. The total is 40 dollars and 98 cents. The pharmacy will let you know when it is ready for pickup.
+
+19
+00:02:12,064 --> 00:02:16,944
+The backend checks family access, refill eligibility, stock and budget. Cedar Square
+
+20
+00:02:16,944 --> 00:02:21,824
+is selected because the closer store cannot fill the complete basket. Payment
+
+21
+00:02:21,824 --> 00:02:26,704
+is authorized. The order is accepted, but it is not ready and
+
+22
+00:02:26,704 --> 00:02:31,584
+has not yet been charged.
+
+23
+00:02:32,589 --> 00:02:37,789
+The pharmacy team sees the same order in its own facility queue.
+
+24
+00:02:37,789 --> 00:02:42,989
+A staff member reviews eligibility and prepares every saved item. Only after
+
+25
+00:02:42,989 --> 00:02:48,189
+that confirmation does the backend capture payment and mark the pickup ready.
+
+26
+00:02:49,189 --> 00:02:53,189
+Back in Alex's account, the ready message and pickup code come from
+
+27
+00:02:53,189 --> 00:02:57,189
+the recorded order status. The complete basket, pickup address and confirmed payment
+
+28
+00:02:57,189 --> 00:03:01,189
+are visible together.
+
+29
+00:03:08,160 --> 00:03:16,000
+Assistant: Your family order is ready for pickup at Cedar Square. Payment of 40 dollars and 98 cents is confirmed.
+
+30
+00:03:17,647 --> 00:03:22,847
+At the pharmacy desk, the customer supplies the pickup code. The handover
+
+31
+00:03:22,847 --> 00:03:28,047
+is confirmed through the fulfillment service. Repeated commands resolve to the same
+
+32
+00:03:28,047 --> 00:03:33,247
+order rather than creating another purchase.
+
+33
+00:03:34,249 --> 00:03:39,829
+The customer history now shows a completed pickup. One request, four family
+
+34
+00:03:39,829 --> 00:03:45,409
+members, one location, and a verified outcome. This browser product is a
+
+35
+00:03:45,409 --> 00:03:50,989
+standalone foundation for a future in car interface. It is not a
+
+36
+00:03:50,989 --> 00:03:56,569
+native CarPlay application or a live pharmacy integration.

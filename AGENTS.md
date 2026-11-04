@@ -17,4 +17,6 @@ Keep user intent, purchase permission, stock reservation, order, payment, fulfil
 
 Use synthetic pharmacy data and sandbox prescription/payment/fulfillment providers only. The prior virtual-kiosk use case is preserved as historical engineering work and is superseded for the default product. No real card data, funds, hardware control, billable providers/cloud resources or public runtime deployment without explicit approval. No protocol-compliance, production-use or benchmark claims without actual conformance/test evidence. References are for concepts, not source translation or indiscriminate copying; inspect per-file licenses before future reuse.
 
+Use a feature branch and pull request for changes. Review the diff and checks before merging through the PR; do not push changes directly to main. A self-review must be labeled as such: GitHub does not permit a PR author to formally approve their own PR, and required independent-review protections must not be bypassed.
+
 Use exact repository-scoped Git operations. The Java payment platform remains independent; do not duplicate it in Python or access its database. Only the exact old payops-ai GitHub repository may be deleted after the separately required final owner confirmation; no other repository deletion is authorized.

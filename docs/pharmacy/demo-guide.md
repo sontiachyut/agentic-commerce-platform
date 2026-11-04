@@ -2,6 +2,10 @@
 
 The demo proves a complete local synthetic customer/staff workflow. It should be shown as a working product candidate, with its integration boundaries clear. It is not a slide deck, a live retailer connection, or a recorded claim of clinical/financial production readiness.
 
+## Published demonstration
+
+The client-ready [MP4, captions and screenshots](../demo/README.md) are committed in `docs/demo/`. The repository README leads with the video. Raw captures, outtakes, local runtimes, credentials and detailed reproduction artifacts remain private under `.local/`.
+
 ## Walkthrough
 
 1. Open Asterfield and enter Alex's customer workspace. Show the four authorized saved routines under My household.
