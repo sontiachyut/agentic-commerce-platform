@@ -2,6 +2,8 @@
 
 Updated: 2026-11-04. Release: **v0.1 — local synthetic demonstration**. Branch: `feat/local-commerce-v1`.
 
+Follow-up work is on `feat/interop-hardening-v2`. The owner authorized the locally feasible interoperability, identity, evaluation and operational work, and then requested deeper research before implementation. The [research dossier](research/README.md) records pinned contracts, executed feasibility experiments, current gaps and the next acceptance gates. These research results do not change the v0.1 application capability claims below.
+
 ## Authorized target
 
 Build a standalone client-demonstrable commerce application and its engineering documentation. Local signed-in Codex inference is authorized. Java payment integration is deferred. No paid model APIs, real funds, billable infrastructure or public runtime deployment are authorized.

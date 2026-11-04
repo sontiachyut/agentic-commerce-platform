@@ -4,6 +4,8 @@ Owner authorization updated 2026-11-04: build the standalone Agentic Commerce pr
 
 In future sessions: read docs/STATUS.md first, teach the problem, consult pinned references and relevant tests, explain alternatives, and progress autonomously within the authorized standalone scope. Validate/debug, explain transaction/tool/recovery behavior and maintain the learning guide. Ask for approval only for work outside that scope. Generated code alone does not complete a milestone.
 
+The 2026-11-04 follow-up authorizes the locally feasible MCP/AP2/TAP/UCP/ACP, identity, evaluation, operational and product-hardening work. Read docs/research/README.md, sources.lock.json and the implementation backlog before proceeding. Research findings are not implemented capabilities; keep their evidence separate. No repeated milestone approval is needed within this scope; paid/external enrollment/public runtime boundaries still apply.
+
 AC-01 through AC-10 are mandatory. Start human-approved and complete that vertical slice before delegated autonomy. The LLM interprets/selects/proposes; deterministic trusted code enforces identity, amount, merchant/product scope, expiration/revocation, budget, replay and fulfillment policy. It cannot authorize itself or hold signing keys/raw payment authority.
 
 Keep user intent, purchase permission, stock reservation, order, payment, fulfillment and agent execution state separate. Graph checkpoints do not guarantee payment or dispense idempotency. Do not directly reuse the old PayOps investigation design; this is a new commerce application with original documentation.
