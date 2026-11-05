@@ -1,0 +1,100 @@
+services:
+  postgres:
+    image: postgres:17-alpine@sha256:266d3c257594e195b309ae9d1805e54c788f1d7b375f56bf6c367aac6c917e7b
+    environment:
+      POSTGRES_USER: commerce
+      POSTGRES_PASSWORD: local-demo-only
+      POSTGRES_DB: commerce
+    ports:
+      - "127.0.0.1:55439:5432"
+    volumes:
+      - commerce-data:/var/lib/postgresql/data
+      - ./infra/init.sql:/docker-entrypoint-initdb.d/01-databases.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U commerce -d commerce"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    labels:
+      com.agentic-commerce.scope: local-synthetic-demo
+  identity-seed:
+    profiles: [identity]
+    image: quay.io/keycloak/keycloak:26.8.1@sha256:3f3c5f8e03c614774b4bd9173b88391fefa4153bfc010d8012d59ad825377332
+    user: "0:0"
+    entrypoint: ["/bin/bash", "-ec"]
+    command: ["cp /seed/commerce-realm.json /import/commerce-realm.json; chown 1000:0 /import/commerce-realm.json; chmod 600 /import/commerce-realm.json"]
+    volumes:
+      - ./.local/identity:/seed:ro
+      - identity-import:/import
+    network_mode: none
+  identity:
+    profiles: [identity]
+    image: quay.io/keycloak/keycloak:26.8.1@sha256:3f3c5f8e03c614774b4bd9173b88391fefa4153bfc010d8012d59ad825377332
+    user: "1000:0"
+    command: ["start-dev", "--import-realm"]
+    env_file: .local/identity/runtime.env
+    ports:
+      - "127.0.0.1:8850:8080"
+    volumes:
+      - identity-import:/opt/keycloak/data/import:ro
+    mem_limit: 768m
+    cpus: 1.5
+    depends_on:
+      postgres:
+        condition: service_healthy
+    labels:
+      com.agentic-commerce.scope: local-synthetic-demo
+  packaged-seed:
+    profiles: [packaged]
+    image: agentic-commerce:local-pharmacy-v0.1
+    user: "0:0"
+    entrypoint: ["/bin/sh", "-ec"]
+    command: ["mkdir -p /state; if test -e /state/protocol-keys.json; then cmp /seed/protocol-keys.json /state/protocol-keys.json; else cp /seed/protocol-keys.json /state/protocol-keys.json; fi; chown 10001:10001 /state /state/protocol-keys.json; chmod 700 /state; chmod 600 /state/protocol-keys.json"]
+    volumes:
+      - ./.local/protocol-keys.json:/seed/protocol-keys.json:ro
+      - packaged-state:/state
+    network_mode: none
+  packaged-api:
+    profiles: [packaged]
+    image: agentic-commerce:local-pharmacy-v0.1
+    build: .
+    env_file: .local/packaged/api.env
+    ports:
+      - "127.0.0.1:8520:8510"
+    volumes:
+      - packaged-state:/app/.local
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 512m
+    cpus: 1
+    depends_on:
+      postgres:
+        condition: service_healthy
+      packaged-source:
+        condition: service_healthy
+  packaged-source:
+    profiles: [packaged]
+    image: agentic-commerce:local-pharmacy-v0.1
+    command: ["python", "-m", "uvicorn", "commerce.simulator:create_source_app", "--factory", "--host", "0.0.0.0", "--port", "8511", "--no-access-log"]
+    env_file: .local/packaged/source.env
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 192m
+    cpus: 0.5
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8511/health',timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  packaged-state:
+  identity-import:
+  commerce-data:

@@ -1,0 +1,14 @@
+{
+  "uid": "commerce-local",
+  "title": "Agentic Commerce — local synthetic operations",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "10s",
+  "time": {"from": "now-30m", "to": "now"},
+  "panels": [
+    {"id":1,"type":"stat","title":"Oldest pending purchase (seconds)","gridPos":{"x":0,"y":0,"w":12,"h":6},"targets":[{"expr":"commerce_oldest_pending_execution_seconds","refId":"A"}]},
+    {"id":2,"type":"stat","title":"Runnable queue age (seconds)","gridPos":{"x":12,"y":0,"w":12,"h":6},"targets":[{"expr":"commerce_oldest_ready_job_seconds","refId":"A"}]},
+    {"id":3,"type":"timeseries","title":"Executions by state","gridPos":{"x":0,"y":6,"w":12,"h":9},"targets":[{"expr":"commerce_executions","legendFormat":"{{state}}","refId":"A"}]},
+    {"id":4,"type":"timeseries","title":"HTTP p95 latency (seconds)","gridPos":{"x":12,"y":6,"w":12,"h":9},"targets":[{"expr":"histogram_quantile(0.95, sum by (le) (rate(commerce_http_request_seconds_bucket[5m])))","refId":"A"}]}
+  ]
+}

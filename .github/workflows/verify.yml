@@ -1,0 +1,61 @@
+name: Verify standalone commerce
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17-alpine@sha256:266d3c257594e195b309ae9d1805e54c788f1d7b375f56bf6c367aac6c917e7b
+        env:
+          POSTGRES_USER: commerce
+          POSTGRES_PASSWORD: local-demo-only
+          POSTGRES_DB: commerce
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U commerce -d commerce"
+          --health-interval 3s --health-timeout 3s --health-retries 20
+    env:
+      COMMERCE_DATABASE_URL: postgresql+psycopg://commerce:local-demo-only@127.0.0.1:5432/commerce
+      COMMERCE_SIMULATOR_DATABASE_URL: postgresql+psycopg://commerce:local-demo-only@127.0.0.1:5432/commerce_sources
+      COMMERCE_TEST_DATABASE_URL: postgresql+psycopg://commerce:local-demo-only@127.0.0.1:5432/commerce_test
+      COMMERCE_TEST_SOURCE_DATABASE_URL: postgresql+psycopg://commerce:local-demo-only@127.0.0.1:5432/commerce_sources_test
+      COMMERCE_SIGNING_KEY: synthetic-ci-signing-key-not-a-real-credential-0001
+      COMMERCE_SOURCE_TOKEN: synthetic-ci-source-token-not-a-real-credential-0001
+      COMMERCE_MODEL_PROVIDER: baseline
+      PGPASSWORD: local-demo-only
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.5.24"
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: psql -h 127.0.0.1 -U commerce -d commerce -f infra/init.sql
+      - run: uv sync --locked
+      - run: uv run alembic upgrade head
+      - run: uv run ruff check src tests tools migrations
+      - run: uv run ruff format --check src tests tools migrations
+      - run: uv run pytest -q --cov=commerce
+      - run: uvx --from pip-audit==2.10.1 pip-audit --path .venv/lib/python3.12/site-packages
+      - run: npm ci --prefix web
+      - run: npm audit --prefix web
+      - run: npm run build --prefix web
+      - run: npm exec --prefix web -- playwright install --with-deps chromium
+      - name: Isolated browser acceptance
+        run: uv run python tools/browser_check.py
+      - name: Pharmacy customer and staff browser acceptance
+        run: uv run python tools/browser_check.py --product pharmacy
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-failure-evidence
+          path: |
+            web/test-results/
+            web/playwright-report/

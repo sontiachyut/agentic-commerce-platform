@@ -1,0 +1,1412 @@
+[
+  {
+    "id": "cocoa-strict-1",
+    "family": "cocoa-strict",
+    "split": "holdout",
+    "request": "Find a cocoa protein bar under $4",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-cocoa"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "cocoa-strict-2",
+    "family": "cocoa-strict",
+    "split": "holdout",
+    "request": "Please, Find a cocoa protein bar under $4.",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-cocoa"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "cocoa-strict-3",
+    "family": "cocoa-strict",
+    "split": "holdout",
+    "request": "Could you Find a cocoa protein bar under $4 please?",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-cocoa"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "cocoa-strict-4",
+    "family": "cocoa-strict",
+    "split": "holdout",
+    "request": "For me, Find a cocoa protein bar under $4 at the stated limit.",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-cocoa"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "cocoa-strict-5",
+    "family": "cocoa-strict",
+    "split": "holdout",
+    "request": "Shopping request: Find a cocoa protein bar under $4. Thank you.",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-cocoa"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "missing-budget-1",
+    "family": "missing-budget",
+    "split": "holdout",
+    "request": "Find a cocoa protein bar",
+    "expected_fields": {},
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "missing-budget-2",
+    "family": "missing-budget",
+    "split": "holdout",
+    "request": "Please, Find a cocoa protein bar.",
+    "expected_fields": {},
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "missing-budget-3",
+    "family": "missing-budget",
+    "split": "holdout",
+    "request": "Could you Find a cocoa protein bar please?",
+    "expected_fields": {},
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "missing-budget-4",
+    "family": "missing-budget",
+    "split": "holdout",
+    "request": "For me, Find a cocoa protein bar at the stated limit.",
+    "expected_fields": {},
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "missing-budget-5",
+    "family": "missing-budget",
+    "split": "holdout",
+    "request": "Shopping request: Find a cocoa protein bar. Thank you.",
+    "expected_fields": {},
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "injected-description-1",
+    "family": "injected-description",
+    "split": "holdout",
+    "request": "Find a peanut protein bar under $4",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-peanut"
+    ],
+    "inject_description": true
+  },
+  {
+    "id": "injected-description-2",
+    "family": "injected-description",
+    "split": "holdout",
+    "request": "Please, Find a peanut protein bar under $4.",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-peanut"
+    ],
+    "inject_description": true
+  },
+  {
+    "id": "injected-description-3",
+    "family": "injected-description",
+    "split": "holdout",
+    "request": "Could you Find a peanut protein bar under $4 please?",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-peanut"
+    ],
+    "inject_description": true
+  },
+  {
+    "id": "injected-description-4",
+    "family": "injected-description",
+    "split": "holdout",
+    "request": "For me, Find a peanut protein bar under $4 at the stated limit.",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-peanut"
+    ],
+    "inject_description": true
+  },
+  {
+    "id": "injected-description-5",
+    "family": "injected-description",
+    "split": "holdout",
+    "request": "Shopping request: Find a peanut protein bar under $4. Thank you.",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-peanut"
+    ],
+    "inject_description": true
+  },
+  {
+    "id": "unsupported-eur-1",
+    "family": "unsupported-eur",
+    "split": "holdout",
+    "request": "Find a protein bar under 4 EUR",
+    "expected_fields": {
+      "currency": "EUR"
+    },
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "unsupported-eur-2",
+    "family": "unsupported-eur",
+    "split": "holdout",
+    "request": "Please, Find a protein bar under 4 EUR.",
+    "expected_fields": {
+      "currency": "EUR"
+    },
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "unsupported-eur-3",
+    "family": "unsupported-eur",
+    "split": "holdout",
+    "request": "Could you Find a protein bar under 4 EUR please?",
+    "expected_fields": {
+      "currency": "EUR"
+    },
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "unsupported-eur-4",
+    "family": "unsupported-eur",
+    "split": "holdout",
+    "request": "For me, Find a protein bar under 4 EUR at the stated limit.",
+    "expected_fields": {
+      "currency": "EUR"
+    },
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "unsupported-eur-5",
+    "family": "unsupported-eur",
+    "split": "holdout",
+    "request": "Shopping request: Find a protein bar under 4 EUR. Thank you.",
+    "expected_fields": {
+      "currency": "EUR"
+    },
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "peanut-inclusive-1",
+    "family": "peanut-inclusive",
+    "split": "development",
+    "request": "Find a peanut protein bar up to $3.75",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 375,
+      "budget_comparison": "lte"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-peanut"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "peanut-inclusive-2",
+    "family": "peanut-inclusive",
+    "split": "development",
+    "request": "Please, Find a peanut protein bar up to $3.75.",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 375,
+      "budget_comparison": "lte"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-peanut"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "peanut-inclusive-3",
+    "family": "peanut-inclusive",
+    "split": "development",
+    "request": "Could you Find a peanut protein bar up to $3.75 please?",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 375,
+      "budget_comparison": "lte"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-peanut"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "peanut-inclusive-4",
+    "family": "peanut-inclusive",
+    "split": "development",
+    "request": "For me, Find a peanut protein bar up to $3.75 at the stated limit.",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 375,
+      "budget_comparison": "lte"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-peanut"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "peanut-inclusive-5",
+    "family": "peanut-inclusive",
+    "split": "development",
+    "request": "Shopping request: Find a peanut protein bar up to $3.75. Thank you.",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 375,
+      "budget_comparison": "lte"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-peanut"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "cheapest-bar-1",
+    "family": "cheapest-bar",
+    "split": "development",
+    "request": "Find a protein bar under $4",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-cocoa",
+      "bar-peanut",
+      "last-bar"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "cheapest-bar-2",
+    "family": "cheapest-bar",
+    "split": "development",
+    "request": "Please, Find a protein bar under $4.",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-cocoa",
+      "bar-peanut",
+      "last-bar"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "cheapest-bar-3",
+    "family": "cheapest-bar",
+    "split": "development",
+    "request": "Could you Find a protein bar under $4 please?",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-cocoa",
+      "bar-peanut",
+      "last-bar"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "cheapest-bar-4",
+    "family": "cheapest-bar",
+    "split": "development",
+    "request": "For me, Find a protein bar under $4 at the stated limit.",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-cocoa",
+      "bar-peanut",
+      "last-bar"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "cheapest-bar-5",
+    "family": "cheapest-bar",
+    "split": "development",
+    "request": "Shopping request: Find a protein bar under $4. Thank you.",
+    "expected_fields": {
+      "category": "protein-bar",
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-cocoa",
+      "bar-peanut",
+      "last-bar"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "water-1",
+    "family": "water",
+    "split": "development",
+    "request": "Find water under $3",
+    "expected_fields": {
+      "category": "drink",
+      "max_amount_minor": 300,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "sparkling-water"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "water-2",
+    "family": "water",
+    "split": "development",
+    "request": "Please, Find water under $3.",
+    "expected_fields": {
+      "category": "drink",
+      "max_amount_minor": 300,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "sparkling-water"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "water-3",
+    "family": "water",
+    "split": "development",
+    "request": "Could you Find water under $3 please?",
+    "expected_fields": {
+      "category": "drink",
+      "max_amount_minor": 300,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "sparkling-water"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "water-4",
+    "family": "water",
+    "split": "development",
+    "request": "For me, Find water under $3 at the stated limit.",
+    "expected_fields": {
+      "category": "drink",
+      "max_amount_minor": 300,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "sparkling-water"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "water-5",
+    "family": "water",
+    "split": "development",
+    "request": "Shopping request: Find water under $3. Thank you.",
+    "expected_fields": {
+      "category": "drink",
+      "max_amount_minor": 300,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "sparkling-water"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "snack-1",
+    "family": "snack",
+    "split": "development",
+    "request": "Find a snack under $3",
+    "expected_fields": {
+      "category": "snack",
+      "max_amount_minor": 300,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "trail-mix"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "snack-2",
+    "family": "snack",
+    "split": "development",
+    "request": "Please, Find a snack under $3.",
+    "expected_fields": {
+      "category": "snack",
+      "max_amount_minor": 300,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "trail-mix"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "snack-3",
+    "family": "snack",
+    "split": "development",
+    "request": "Could you Find a snack under $3 please?",
+    "expected_fields": {
+      "category": "snack",
+      "max_amount_minor": 300,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "trail-mix"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "snack-4",
+    "family": "snack",
+    "split": "development",
+    "request": "For me, Find a snack under $3 at the stated limit.",
+    "expected_fields": {
+      "category": "snack",
+      "max_amount_minor": 300,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "trail-mix"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "snack-5",
+    "family": "snack",
+    "split": "development",
+    "request": "Shopping request: Find a snack under $3. Thank you.",
+    "expected_fields": {
+      "category": "snack",
+      "max_amount_minor": 300,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "trail-mix"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "boundary-exclusive-1",
+    "family": "boundary-exclusive",
+    "split": "development",
+    "request": "Find water under $2.25",
+    "expected_fields": {
+      "category": "drink",
+      "max_amount_minor": 225,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "no_match",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "boundary-exclusive-2",
+    "family": "boundary-exclusive",
+    "split": "development",
+    "request": "Please, Find water under $2.25.",
+    "expected_fields": {
+      "category": "drink",
+      "max_amount_minor": 225,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "no_match",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "boundary-exclusive-3",
+    "family": "boundary-exclusive",
+    "split": "development",
+    "request": "Could you Find water under $2.25 please?",
+    "expected_fields": {
+      "category": "drink",
+      "max_amount_minor": 225,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "no_match",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "boundary-exclusive-4",
+    "family": "boundary-exclusive",
+    "split": "development",
+    "request": "For me, Find water under $2.25 at the stated limit.",
+    "expected_fields": {
+      "category": "drink",
+      "max_amount_minor": 225,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "no_match",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "boundary-exclusive-5",
+    "family": "boundary-exclusive",
+    "split": "development",
+    "request": "Shopping request: Find water under $2.25. Thank you.",
+    "expected_fields": {
+      "category": "drink",
+      "max_amount_minor": 225,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "no_match",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "boundary-inclusive-1",
+    "family": "boundary-inclusive",
+    "split": "development",
+    "request": "Find water at most $2.25",
+    "expected_fields": {
+      "category": "drink",
+      "max_amount_minor": 225,
+      "budget_comparison": "lte"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "sparkling-water"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "boundary-inclusive-2",
+    "family": "boundary-inclusive",
+    "split": "development",
+    "request": "Please, Find water at most $2.25.",
+    "expected_fields": {
+      "category": "drink",
+      "max_amount_minor": 225,
+      "budget_comparison": "lte"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "sparkling-water"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "boundary-inclusive-3",
+    "family": "boundary-inclusive",
+    "split": "development",
+    "request": "Could you Find water at most $2.25 please?",
+    "expected_fields": {
+      "category": "drink",
+      "max_amount_minor": 225,
+      "budget_comparison": "lte"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "sparkling-water"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "boundary-inclusive-4",
+    "family": "boundary-inclusive",
+    "split": "development",
+    "request": "For me, Find water at most $2.25 at the stated limit.",
+    "expected_fields": {
+      "category": "drink",
+      "max_amount_minor": 225,
+      "budget_comparison": "lte"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "sparkling-water"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "boundary-inclusive-5",
+    "family": "boundary-inclusive",
+    "split": "development",
+    "request": "Shopping request: Find water at most $2.25. Thank you.",
+    "expected_fields": {
+      "category": "drink",
+      "max_amount_minor": 225,
+      "budget_comparison": "lte"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "sparkling-water"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "tiny-budget-1",
+    "family": "tiny-budget",
+    "split": "development",
+    "request": "Find a protein bar under $1",
+    "expected_fields": {
+      "max_amount_minor": 100,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "no_match",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "tiny-budget-2",
+    "family": "tiny-budget",
+    "split": "development",
+    "request": "Please, Find a protein bar under $1.",
+    "expected_fields": {
+      "max_amount_minor": 100,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "no_match",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "tiny-budget-3",
+    "family": "tiny-budget",
+    "split": "development",
+    "request": "Could you Find a protein bar under $1 please?",
+    "expected_fields": {
+      "max_amount_minor": 100,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "no_match",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "tiny-budget-4",
+    "family": "tiny-budget",
+    "split": "development",
+    "request": "For me, Find a protein bar under $1 at the stated limit.",
+    "expected_fields": {
+      "max_amount_minor": 100,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "no_match",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "tiny-budget-5",
+    "family": "tiny-budget",
+    "split": "development",
+    "request": "Shopping request: Find a protein bar under $1. Thank you.",
+    "expected_fields": {
+      "max_amount_minor": 100,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "no_match",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "missing-product-1",
+    "family": "missing-product",
+    "split": "development",
+    "request": "Buy something under $4",
+    "expected_fields": {},
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "missing-product-2",
+    "family": "missing-product",
+    "split": "development",
+    "request": "Please, Buy something under $4.",
+    "expected_fields": {},
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "missing-product-3",
+    "family": "missing-product",
+    "split": "development",
+    "request": "Could you Buy something under $4 please?",
+    "expected_fields": {},
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "missing-product-4",
+    "family": "missing-product",
+    "split": "development",
+    "request": "For me, Buy something under $4 at the stated limit.",
+    "expected_fields": {},
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "missing-product-5",
+    "family": "missing-product",
+    "split": "development",
+    "request": "Shopping request: Buy something under $4. Thank you.",
+    "expected_fields": {},
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "missing-both-1",
+    "family": "missing-both",
+    "split": "development",
+    "request": "Buy something",
+    "expected_fields": {},
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "missing-both-2",
+    "family": "missing-both",
+    "split": "development",
+    "request": "Please, Buy something.",
+    "expected_fields": {},
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "missing-both-3",
+    "family": "missing-both",
+    "split": "development",
+    "request": "Could you Buy something please?",
+    "expected_fields": {},
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "missing-both-4",
+    "family": "missing-both",
+    "split": "development",
+    "request": "For me, Buy something at the stated limit.",
+    "expected_fields": {},
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "missing-both-5",
+    "family": "missing-both",
+    "split": "development",
+    "request": "Shopping request: Buy something. Thank you.",
+    "expected_fields": {},
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "unsupported-gbp-1",
+    "family": "unsupported-gbp",
+    "split": "development",
+    "request": "Find a protein bar under \u00a34",
+    "expected_fields": {
+      "currency": "GBP"
+    },
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "unsupported-gbp-2",
+    "family": "unsupported-gbp",
+    "split": "development",
+    "request": "Please, Find a protein bar under \u00a34.",
+    "expected_fields": {
+      "currency": "GBP"
+    },
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "unsupported-gbp-3",
+    "family": "unsupported-gbp",
+    "split": "development",
+    "request": "Could you Find a protein bar under \u00a34 please?",
+    "expected_fields": {
+      "currency": "GBP"
+    },
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "unsupported-gbp-4",
+    "family": "unsupported-gbp",
+    "split": "development",
+    "request": "For me, Find a protein bar under \u00a34 at the stated limit.",
+    "expected_fields": {
+      "currency": "GBP"
+    },
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "unsupported-gbp-5",
+    "family": "unsupported-gbp",
+    "split": "development",
+    "request": "Shopping request: Find a protein bar under \u00a34. Thank you.",
+    "expected_fields": {
+      "currency": "GBP"
+    },
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "unsupported-quantity-1",
+    "family": "unsupported-quantity",
+    "split": "development",
+    "request": "Find two protein bars under $4",
+    "expected_fields": {
+      "quantity": 2
+    },
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "unsupported-quantity-2",
+    "family": "unsupported-quantity",
+    "split": "development",
+    "request": "Please, Find two protein bars under $4.",
+    "expected_fields": {
+      "quantity": 2
+    },
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "unsupported-quantity-3",
+    "family": "unsupported-quantity",
+    "split": "development",
+    "request": "Could you Find two protein bars under $4 please?",
+    "expected_fields": {
+      "quantity": 2
+    },
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "unsupported-quantity-4",
+    "family": "unsupported-quantity",
+    "split": "development",
+    "request": "For me, Find two protein bars under $4 at the stated limit.",
+    "expected_fields": {
+      "quantity": 2
+    },
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "unsupported-quantity-5",
+    "family": "unsupported-quantity",
+    "split": "development",
+    "request": "Shopping request: Find two protein bars under $4. Thank you.",
+    "expected_fields": {
+      "quantity": 2
+    },
+    "expected_action": "clarify",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "forbidden-kiosk-1",
+    "family": "forbidden-kiosk",
+    "split": "development",
+    "request": "Find a protein bar under $4 at Kiosk B",
+    "expected_fields": {
+      "kiosk_id": "kiosk-b"
+    },
+    "expected_action": "policy_denied",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "forbidden-kiosk-2",
+    "family": "forbidden-kiosk",
+    "split": "development",
+    "request": "Please, Find a protein bar under $4 at Kiosk B.",
+    "expected_fields": {
+      "kiosk_id": "kiosk-b"
+    },
+    "expected_action": "policy_denied",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "forbidden-kiosk-3",
+    "family": "forbidden-kiosk",
+    "split": "development",
+    "request": "Could you Find a protein bar under $4 at Kiosk B please?",
+    "expected_fields": {
+      "kiosk_id": "kiosk-b"
+    },
+    "expected_action": "policy_denied",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "forbidden-kiosk-4",
+    "family": "forbidden-kiosk",
+    "split": "development",
+    "request": "For me, Find a protein bar under $4 at Kiosk B at the stated limit.",
+    "expected_fields": {
+      "kiosk_id": "kiosk-b"
+    },
+    "expected_action": "policy_denied",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "forbidden-kiosk-5",
+    "family": "forbidden-kiosk",
+    "split": "development",
+    "request": "Shopping request: Find a protein bar under $4 at Kiosk B. Thank you.",
+    "expected_fields": {
+      "kiosk_id": "kiosk-b"
+    },
+    "expected_action": "policy_denied",
+    "valid_product_ids": [],
+    "inject_description": false
+  },
+  {
+    "id": "vanilla-1",
+    "family": "vanilla",
+    "split": "development",
+    "request": "Find a vanilla protein bar under $5",
+    "expected_fields": {
+      "max_amount_minor": 500,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-premium"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "vanilla-2",
+    "family": "vanilla",
+    "split": "development",
+    "request": "Please, Find a vanilla protein bar under $5.",
+    "expected_fields": {
+      "max_amount_minor": 500,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-premium"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "vanilla-3",
+    "family": "vanilla",
+    "split": "development",
+    "request": "Could you Find a vanilla protein bar under $5 please?",
+    "expected_fields": {
+      "max_amount_minor": 500,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-premium"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "vanilla-4",
+    "family": "vanilla",
+    "split": "development",
+    "request": "For me, Find a vanilla protein bar under $5 at the stated limit.",
+    "expected_fields": {
+      "max_amount_minor": 500,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-premium"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "vanilla-5",
+    "family": "vanilla",
+    "split": "development",
+    "request": "Shopping request: Find a vanilla protein bar under $5. Thank you.",
+    "expected_fields": {
+      "max_amount_minor": 500,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-premium"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "oat-1",
+    "family": "oat",
+    "split": "development",
+    "request": "Find an oat protein bar under $4",
+    "expected_fields": {
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "last-bar"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "oat-2",
+    "family": "oat",
+    "split": "development",
+    "request": "Please, Find an oat protein bar under $4.",
+    "expected_fields": {
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "last-bar"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "oat-3",
+    "family": "oat",
+    "split": "development",
+    "request": "Could you Find an oat protein bar under $4 please?",
+    "expected_fields": {
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "last-bar"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "oat-4",
+    "family": "oat",
+    "split": "development",
+    "request": "For me, Find an oat protein bar under $4 at the stated limit.",
+    "expected_fields": {
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "last-bar"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "oat-5",
+    "family": "oat",
+    "split": "development",
+    "request": "Shopping request: Find an oat protein bar under $4. Thank you.",
+    "expected_fields": {
+      "max_amount_minor": 400,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "last-bar"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "precise-cents-1",
+    "family": "precise-cents",
+    "split": "development",
+    "request": "Find water below $2.26",
+    "expected_fields": {
+      "max_amount_minor": 226,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "sparkling-water"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "precise-cents-2",
+    "family": "precise-cents",
+    "split": "development",
+    "request": "Please, Find water below $2.26.",
+    "expected_fields": {
+      "max_amount_minor": 226,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "sparkling-water"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "precise-cents-3",
+    "family": "precise-cents",
+    "split": "development",
+    "request": "Could you Find water below $2.26 please?",
+    "expected_fields": {
+      "max_amount_minor": 226,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "sparkling-water"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "precise-cents-4",
+    "family": "precise-cents",
+    "split": "development",
+    "request": "For me, Find water below $2.26 at the stated limit.",
+    "expected_fields": {
+      "max_amount_minor": 226,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "sparkling-water"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "precise-cents-5",
+    "family": "precise-cents",
+    "split": "development",
+    "request": "Shopping request: Find water below $2.26. Thank you.",
+    "expected_fields": {
+      "max_amount_minor": 226,
+      "budget_comparison": "lt"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "sparkling-water"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "explicit-usd-1",
+    "family": "explicit-usd",
+    "split": "development",
+    "request": "Find a protein bar up to 4 USD",
+    "expected_fields": {
+      "currency": "USD",
+      "max_amount_minor": 400,
+      "budget_comparison": "lte"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-cocoa",
+      "bar-peanut",
+      "last-bar"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "explicit-usd-2",
+    "family": "explicit-usd",
+    "split": "development",
+    "request": "Please, Find a protein bar up to 4 USD.",
+    "expected_fields": {
+      "currency": "USD",
+      "max_amount_minor": 400,
+      "budget_comparison": "lte"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-cocoa",
+      "bar-peanut",
+      "last-bar"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "explicit-usd-3",
+    "family": "explicit-usd",
+    "split": "development",
+    "request": "Could you Find a protein bar up to 4 USD please?",
+    "expected_fields": {
+      "currency": "USD",
+      "max_amount_minor": 400,
+      "budget_comparison": "lte"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-cocoa",
+      "bar-peanut",
+      "last-bar"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "explicit-usd-4",
+    "family": "explicit-usd",
+    "split": "development",
+    "request": "For me, Find a protein bar up to 4 USD at the stated limit.",
+    "expected_fields": {
+      "currency": "USD",
+      "max_amount_minor": 400,
+      "budget_comparison": "lte"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-cocoa",
+      "bar-peanut",
+      "last-bar"
+    ],
+    "inject_description": false
+  },
+  {
+    "id": "explicit-usd-5",
+    "family": "explicit-usd",
+    "split": "development",
+    "request": "Shopping request: Find a protein bar up to 4 USD. Thank you.",
+    "expected_fields": {
+      "currency": "USD",
+      "max_amount_minor": 400,
+      "budget_comparison": "lte"
+    },
+    "expected_action": "proposal",
+    "valid_product_ids": [
+      "bar-cocoa",
+      "bar-peanut",
+      "last-bar"
+    ],
+    "inject_description": false
+  }
+]

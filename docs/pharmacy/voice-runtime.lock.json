@@ -1,0 +1,10 @@
+{
+  "engine": "whisper.cpp",
+  "version": "v1.9.5",
+  "revision": "d1be6fde11ac6e0407606b4e42fe72d34add8037",
+  "model": "tiny.en",
+  "model_revision": "5359861c739e955e79d9a303bcbc70fb988958b1",
+  "model_url": "https://huggingface.co/ggerganov/whisper.cpp/resolve/5359861c739e955e79d9a303bcbc70fb988958b1/ggml-tiny.en.bin",
+  "model_sha256": "921e4cf8686fdd993dcd081a5da5b6c365bfde1162e72b08d75ac75289920b1f",
+  "bytes": 77704715
+}

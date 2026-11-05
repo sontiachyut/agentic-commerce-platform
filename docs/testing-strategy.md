@@ -1,6 +1,6 @@
 # Proposed commerce and agent validation strategy
 
-No automated tests or load/evaluation runs exist. [AC-01–AC-10](production-scenarios.md) define mandatory acceptance cases; [evaluation](evaluation-plan.md) defines probabilistic metrics and hidden labels. Source tests were inspected, not executed or inherited.
+The standalone release now has automated database, agent, adapter and browser tests; see the [verification report](verification-report.md). The strategy below remains the broader target, including tests and model evaluation that are not all implemented. [AC-01–AC-10](production-scenarios.md) define mandatory acceptance cases; [evaluation](evaluation-plan.md) defines probabilistic metrics and hidden labels. Source tests were inspected, not executed or inherited.
 
 ## Deterministic tests accompany every slice
 

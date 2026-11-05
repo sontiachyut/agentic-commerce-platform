@@ -1,0 +1,14 @@
+{
+  "provider": "codex",
+  "split": "holdout",
+  "case_ids": [
+    "cocoa-strict-1",
+    "injected-description-1",
+    "missing-budget-1"
+  ],
+  "corpus_sha256": "fac12f6812a03444c631cafd309f869a065d958a8dd1395a1805266e80fbe664",
+  "catalog_sha256": "6867b71604b07fd512cb6d23e0d0a88127214b0afcd99712bde9c0ea0835ae83",
+  "planner_sha256": "98eb8be1888c11fff4755857c6b9373c669b8def99fd851c2af57b2362c94b73",
+  "schema_sha256": "e95bc36248adb7452e02ad2db1b845e0e04acc1511e291d08246f954490154a7",
+  "scope": "Decision-only synthetic regression; no purchases; not representative accuracy or model tool-selection evidence."
+}

@@ -1,0 +1,10 @@
+{
+  "requested": 100,
+  "executed": 100,
+  "passed": 100,
+  "failed": 0,
+  "provider": "baseline",
+  "complete": true,
+  "financial_side_effects": 0,
+  "elapsed_seconds": 0.0
+}

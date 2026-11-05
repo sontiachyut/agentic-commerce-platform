@@ -1,6 +1,6 @@
 # Proposed six-component architecture
 
-All components are logical modules initially. The README diagram is planned, not implemented. A single FastAPI business application plus a separate graph/background runner is sufficient before measured scale requires more processes.
+This is the original target architecture. The [runtime architecture](runtime-architecture.md) and [status](STATUS.md) describe the executable v0.1 boundaries. A single FastAPI business application plus a separate graph/background runner is sufficient before measured scale requires more processes.
 
 | Component | Owns | Must not do |
 | --- | --- | --- |

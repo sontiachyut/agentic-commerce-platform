@@ -1,0 +1,82 @@
+{
+  "recorded_at": "2026-11-04T23:10:42.972Z",
+  "scope": "Local synthetic demonstration; two authored cases, not held-out accuracy or production throughput.",
+  "backend_tests": {
+    "passed": 100,
+    "seconds": 31.1,
+    "includes_absent_optional_voice_runtime_validation": true,
+    "includes_missing_saved_family_item_guard": true
+  },
+  "pharmacy_browser_tests": {
+    "passed": 4,
+    "seconds": 40.3,
+    "local_neural_speech_and_playback": true
+  },
+  "retail_browser_tests": {
+    "passed": 6,
+    "seconds": 12.7
+  },
+  "real_codex_cases": {
+    "decisions": [
+      {
+        "members": 4,
+        "clarification": false,
+        "provider": "codex",
+        "usage": {
+          "elapsed_seconds": 4.502,
+          "input_tokens": 6545,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 50,
+          "reasoning_output_tokens": 0
+        }
+      },
+      {
+        "members": 4,
+        "clarification": false,
+        "provider": "codex",
+        "usage": {
+          "elapsed_seconds": 4.453,
+          "input_tokens": 6559,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 50,
+          "reasoning_output_tokens": 0
+        }
+      }
+    ],
+    "requests": [
+      {
+        "state": "BUDGET_EXCEEDED",
+        "provider": "codex"
+      },
+      {
+        "state": "PICKED_UP",
+        "provider": "codex"
+      }
+    ],
+    "source_commands": {
+      "authorize": 1,
+      "capture": 1,
+      "dispense": 1
+    }
+  },
+  "video": {
+    "file": "asterfield-family-pickup.mp4",
+    "duration_seconds": 236.569,
+    "bytes": 6616715,
+    "sha256": "7679b52f22e4956ee4fa927a832327862edddf8a44243fa644f064e789a3cd66",
+    "video_codec": "h264",
+    "audio_codec": "aac",
+    "synthetic_microphone": true,
+    "neural_narration": true,
+    "actual_app_spoken_updates": 2
+  },
+  "restore": {
+    "commerce_tables": 29,
+    "commerce_rows": 826,
+    "source_tables": 2,
+    "source_rows": 48,
+    "fingerprints_matching": true
+  }
+}

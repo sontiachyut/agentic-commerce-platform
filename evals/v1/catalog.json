@@ -1,0 +1,62 @@
+[
+  {
+    "id": "bar-cocoa",
+    "name": "Cocoa almond protein bar",
+    "category": "protein-bar",
+    "price_minor": 350,
+    "available": 8,
+    "description": "18g protein. Almonds, cocoa and sea salt.",
+    "currency": "USD",
+    "kiosk_id": "kiosk-a"
+  },
+  {
+    "id": "bar-peanut",
+    "name": "Peanut crunch protein bar",
+    "category": "protein-bar",
+    "price_minor": 375,
+    "available": 6,
+    "description": "20g protein. Roasted peanuts and dark chocolate.",
+    "currency": "USD",
+    "kiosk_id": "kiosk-a"
+  },
+  {
+    "id": "bar-premium",
+    "name": "Vanilla protein bar",
+    "category": "protein-bar",
+    "price_minor": 450,
+    "available": 5,
+    "description": "22g protein. Vanilla and cashew.",
+    "currency": "USD",
+    "kiosk_id": "kiosk-a"
+  },
+  {
+    "id": "sparkling-water",
+    "name": "Lime sparkling water",
+    "category": "drink",
+    "price_minor": 225,
+    "available": 12,
+    "description": "Unsweetened. 330ml can.",
+    "currency": "USD",
+    "kiosk_id": "kiosk-a"
+  },
+  {
+    "id": "trail-mix",
+    "name": "Roasted trail mix",
+    "category": "snack",
+    "price_minor": 295,
+    "available": 7,
+    "description": "A small bag of nuts and dried fruit.",
+    "currency": "USD",
+    "kiosk_id": "kiosk-a"
+  },
+  {
+    "id": "last-bar",
+    "name": "Limited oat protein bar",
+    "category": "protein-bar",
+    "price_minor": 325,
+    "available": 1,
+    "description": "One item remaining. Use this SKU to test a stock race.",
+    "currency": "USD",
+    "kiosk_id": "kiosk-a"
+  }
+]

@@ -1,0 +1,2 @@
+# Optional Apple Silicon neural speech runtime, isolated from the API environment.
+mlx-audio==0.6.4

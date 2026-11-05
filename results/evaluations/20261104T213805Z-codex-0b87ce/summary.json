@@ -1,0 +1,10 @@
+{
+  "requested": 3,
+  "executed": 3,
+  "passed": 1,
+  "failed": 2,
+  "provider": "codex",
+  "complete": true,
+  "financial_side_effects": 0,
+  "elapsed_seconds": 12.949
+}
